@@ -1,0 +1,55 @@
+{
+    "schemaVersion": "1.0.0",
+    "sourceName": "Funki_Delire",
+    "mods": {
+        "jak-4-mods": {
+            "displayName": "Jak 4 Mods",
+            "description": "Jak 4 Mods",
+            "authors": [
+                "Funki Delire"
+            ],
+            "tags": [
+                "texture-mod",
+                "gameplay-mod",
+                "model-replacement"
+            ],
+            "websiteUrl": "https://github.com/FUNKI-DELIRE-LEON-GAGIN/Jak-4-mods",
+            "supportedGames": [
+                "jak1"
+            ],
+            "versions": [
+                {
+                    "version": "0.0.3",
+                    "publishedDate": "2025-02-05T01:01:01Z",
+                    "supportedGames": [
+                        "jak1"
+                    ],
+                    "settings": {
+                        "decompConfigOverride": "",
+                        "shareVanillaSaves": false
+                    },
+                    "assets": {
+                        "windows": "https://github.com/FUNKI-DELIRE-LEON-GAGIN/Jak-4-mods/releases/download/v0.0.3/windows-v0.0.3.zip",
+                        "linux": "https://github.com/FUNKI-DELIRE-LEON-GAGIN/Jak-4-mods/releases/download/v0.0.3/linux-v0.0.3.tar.gz",
+                        "macos": "https://github.com/FUNKI-DELIRE-LEON-GAGIN/Jak-4-mods/releases/download/v0.0.3/macos-intel-v0.0.3.tar.gz"
+                    },
+                    "assetDownloadCounts": {
+                        "windows": 0,
+                        "linux": 0,
+                        "macos": 0
+                    }
+                }
+            ],
+            "coverArtUrl": "https://github.com/FUNKI-DELIRE-LEON-GAGIN/Jak-4-mods/blob/main/DRAGON%20JAK%20BALL.jpg?raw=true",
+            "thumbnailArtUrl": "https://github.com/FUNKI-DELIRE-LEON-GAGIN/Jak-4-mods/blob/main/DRAGON%20JAK%20BALL.jpg?raw=true",
+            "perGameConfig": {
+                "jak1": {
+                    "releaseDate": "2024-09-17"
+                }
+            },
+            "externalLink": null
+        }
+    },
+    "texturePacks": {},
+    "lastUpdated": "2024-10-01T01:01:01.000Z"
+}
