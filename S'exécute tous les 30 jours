@@ -1,0 +1,12 @@
+name: Keep Repository Active
+
+on:
+  schedule:
+    - cron: '0 0 */10 * *'  # S'exécute tous les 30 jours
+
+jobs:
+  keep_alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log
+        run: echo "Keeping repository active to avoid workflow deactivation."

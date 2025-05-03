@@ -1,0 +1,34 @@
+name: 🏭 Cut Mod Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Semver Bump Type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write
+
+jobs:
+  cut_release:
+    name: "Cut Release"
+    uses: open-goal/mod-bundling-tools/.github/workflows/mod-bundler.yml@v1
+    with:
+      semverBump: ${{ inputs.bump }}
+      metadataName: "DragonJak"
+      metadataDescription: "Dragon ball in Jak and daxter !"
+      metadataSupportedGames: "jak1"
+      metadataAuthors: "barg,vase"
+      metadataTags: "gameplay-mod"
+      metadataWebsiteUrl: "https://github.com/FUNKI-DELIRE-LEON-GAGIN/Dragon-Jak-Ball"
+      toolingRepo: "OpenGOAL-Mods/OG-Mod-Base"
+      gameAssetsDir: "game/assets"
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
