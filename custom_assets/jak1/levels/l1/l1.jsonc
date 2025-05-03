@@ -1,0 +1,3891 @@
+{
+  // The "in-game" name of the level. Should be lower case, with dashes (GOAL symbol name)
+  // the name of this file, and the folder this file is in must have the same name.
+  "long_name": "l1",
+  // The file name, should be upper case and 8 characters or less.
+  "iso_name": "L1",
+  // The nickname, should be exactly 3 characters
+  "nickname": "l1l", // 3 char name, all lowercase
+  // Background mesh file.
+  // Must have vertex colors. Use the blender cycles renderer, bake, diffuse, uncheck color,
+  // and bake to vertex colors. For now, only the first vertex color group is used, so make sure you
+  // only have 1.
+  "gltf_file": "custom_assets/jak1/levels/l1/l1-l1.glb",
+
+  // automatically set wall vs. ground based on angle. Useful if you don't want to assign this yourself
+  "automatic_wall_detection": false,
+  "automatic_wall_angle": 45.0,
+
+  // if your mesh has triangles with incorrect orientation, set this to make all collision mesh triangles double sided
+  // this makes collision 2x slower and bigger, so only use if really needed
+  "double_sided_collide": false,
+
+  // available res-lump tag types:
+  // integer types: int32, uint32, enum-int32, enum-uint32
+  // float types: float, meters (1 meter = 4096.0 units), degrees (65536.0 = 360°)
+  // vector types: vector (normal floats), vector4m (meters), vector3m (meters with w set to 1.0), vector-vol (normal floats with w in meters), movie-pos (meters with w in degrees)
+  // special types: symbol, type, string, eco-info, cell-info, buzzer-info, water-height
+  //
+  // examples:
+  //
+  // adds a float tag 'spring-height' with value of 200 meters (1 meter = 4096.0 units):
+  // "spring-height": ["meters", 200.0]
+  //
+  // adds a degrees tag 'rotoffset':
+  // "rotoffset": ["degrees", -45.0]
+  //
+  // adds a movie-pos tag:
+  // "movie-pos": ["movie-pos", [100.22, -25.3, 99.5, 180.0]]
+  //
+  // adds an enum tag 'options':
+  // "options": ["enum-int32", "(fact-options large)"]
+  //
+  // adds a water-height tag:
+  // "water-height": ["water-height", 25.0, 0.5, 2.0, "(water-flags wt08 wt03 wt01)"]
+  //
+  // adds an eco-info tag:
+  // "eco-info": ["eco-info", "(pickup-type health)", 2]
+  //
+  // adds a cell-info tag:
+  // "eco-info": ["cell-info", "(game-task training-gimmie)"]
+  //
+  // adds a buzzer-info tag:
+  // "eco-info": ["buzzer-info", "(game-task training-buzzer)", 5]
+  //
+  // adds a 'symbol' tag (using the 'type' and 'string' lump types works the same way):
+  // "symbol-list": ["symbol", "sym-1", "sym-2"]
+
+  // The base actor id for your custom level. If you have multiple levels, this should be unique!
+  "base_id": 20001,
+
+  // All art groups you want to use in your custom level. Will add their models and corresponding textures to the FR3 file.
+  // Note: You will still have to add them to your level's .gd file.
+  // "art_groups": ["plat-ag"],
+
+// "flut-saddle-ag" ET LA BASE POUR TEXTURE FLUT FLUT LE RESTE JSP TROP
+
+  "art_groups": ["babak-ag",
+
+    "flut-saddle-ag",  "racer-ag", "ice-cube-ag",
+
+
+        "balloonlurker-ag",
+    
+    "ef-plane-ag", "plat-ag", "plat-eco-ag"],
+
+  // If you have any custom models in the "custom_assets/jak1/models/custom_levels" folder that you want to use in your level, add them to this list.
+  // Note: Like with art groups, these should also be added to your level's .gd file.
+  "custom_models": ["test-actor"],
+
+  // Any textures you want to include in your custom level. This is mainly useful for things such as the zoomer HUD,
+  // sky textures and cases where you want to use objects drawn with the generic renderer,
+  // which also requires you to set a texture remap table and a list of tpages.
+  // To get a list of all the textures, you can extract all of the game's textures
+  // by setting "save_texture_pngs" to true in the decompiler config.
+  // The format is ["tpage-name", "texture-name1", "texture-name2", ...].
+  // If you want all textures from a tpage, you can just do ["tpage-name"].
+  "textures": [
+    // Zoomer HUD textures
+   ["zoomerhud"],
+    // Sandover sky textures
+    ["village1-vis-alpha"]
+  ],
+
+  // Which vanilla level's texture remap table to use.
+  // This is needed if you want to have proper textures for objects that are drawn using generic, such as
+  // dark eco pools or dying enemies. If you choose to use this,
+  // the order of art groups and tpages in your level's .gd MUST match the vanilla level's for the textures to work.
+  "tex_remap": "village1",
+
+  // Which sky to use for your custom level. This needs to be the name of a vanilla level with sky textures.
+  // Your level's mood update needs to be set up to copy the sky texture (update-mood-default already handles this as an example).
+  // You also need to add a specific tpage to your level .gd depending on the level you chose:
+  // training:   tpage-1308.go
+  // village1:   tpage-401.go
+  // beach:      tpage-215.go
+  // jungle:     tpage-388.go
+  // misty:      tpage-520.go
+  // firecanyon: tpage-1123.go
+  // village2:   tpage-921.go
+  // rolling:    tpage-925.go
+  // sunkenb:    tpage-162.go
+  // swamp:      tpage-630.go
+  // ogre:       tpage-1117.go
+  // village3:   tpage-1194.go
+  // snow:       tpage-712.go
+  // finalboss:  tpage-1418.go
+  // The tpage you choose also has to be in the alpha (4th) slot in the "tpages" list below.
+  "sky": "village1",
+
+  // Any texture pages that are added to the level's "texture-ids" array.
+  // These will be logged in and linked as part of level loading.
+  // There are five tpage categories, in this order:
+  // - tfrag
+  // - pris
+  // - shrub
+  // - alpha
+  // - water
+  // This is also (with the exception of levels that use the zoomer) the order that the tpages are listed in in the vanilla .gd files.
+  // You need to also add these to your level .gd as well.
+  // Sky textures use the alpha slot.
+  // If this is empty and "tex_remap" and "sky" are the same level, this will be auto-filled with the tpages from the
+  // corresponding level (check its .gd file for the art group/tpage order to copy over).
+  "tpages": [],
+
+  // Ambients you want to use in your custom level. Ambients can be used for various things like changing the music variation (flava),
+  // adding ambient sounds, level name hints, etc.
+  "ambients": [
+    {
+      "trans": [-21.6238, 20.0496, 17.1191, 10.0],
+      "bsphere": [-21.6238, 20.0496, 17.1191, 15.0],
+      "lump": {
+        "name": "test-ambient",
+        "type": "'hint",
+        "text-id": ["enum-uint32", "(text-id fuel-cell)"], // text id for the "POWER CELL" text
+        "play-mode": "'notice"
+      }
+    }
+  ],
+
+
+
+
+
+
+  "actors": [
+    {
+      "trans": [-21.6238, 20.0496, 17.1191], // translation
+      "etype": "fuel-cell", // actor type
+      "game_task": "(game-task none)", // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [-21.6238, 19.3496, 17.1191, 10], // bounding sphere
+      "lump": {
+        "name": "test-fuel-cell",
+        "eco-info": ["cell-info", "(game-task none)"]
+      }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "trans": [-15.2818, 15.2461, 17.136], // translation
+      "etype": "crate", // actor type
+      "game_task": "(game-task none)", // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [-15.2818, 15.2461, 17.136, 10], // bounding sphere
+      "lump": {
+        "name": "test-crate",
+        "crate-type": "'steel",
+        "eco-info": ["eco-info", "(pickup-type money)", 10]
+      }
+    },
+
+    {
+      "trans": [-5.463, 17.4553, 1.6169], // translation
+      "etype": "eco-yellow", // actor type
+      "game_task": "(game-task none)", // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [-5.463, 17.4553, 1.6169, 10], // bounding sphere
+      "lump": {
+        "name": "test-eco"
+      }
+    },
+    {
+      "trans": [-7.3159, 1.0468, 20.3499],
+      "etype": "babak",
+      "game_task": 0,
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-7.3159, 1.0468, 20.3499, 10],
+      "lump": {
+        "name": "test-babak",
+        "vis-dist": ["meters", 200.0],
+        "cam-notice-dist": ["meters", 30.0],
+        "idle-distance": ["meters", 50.0],
+        "cam-vert": ["meters", 8.0],
+        "cam-horz": ["meters", 20.0],
+        "path": ["vector3m", // I am pretty sure game will crash if there is no path for an enemy. So just add one. You can use "path-actor" if you want to use another actor's path.
+            [-7.3159, 1.0468, 20.3499],
+            [-2.3607, 1.0468, 12.8255],
+            [-9.7266, 1.0468, 14.4445],
+            [-7.3159, 1.0468, 20.3499]
+          ],
+        "nav-mesh-sphere": ["vector4m", // You can define spheres that will be added to the navmesh of the enemy. Enemies of the navmesh will avoid these spheres - like they avoid each other.
+          [-5.3159, 1.0468, 16.3499, 1.0]
+          ]
+      }
+    },
+    {
+      "trans": [-5.41, 3.5, 28.42], // translation
+      "etype": "test-actor", // actor type
+      "game_task": 0, // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [-7.41, 3.5, 28.42, 10], // bounding sphere
+      "lump": {
+        "name": "test-actor"
+      }
+    },
+
+    {
+      "trans": [0.0, 50.0, 10.0],
+      "etype": "linear-plat",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [0.0, 50.0, 10.0, 10],
+      "lump": {
+        "name": "linear-plat-0",
+        "path": ["vector4m",
+          [0.0, 50.0, 10.0, 1.0],
+          [0.0, 50.0, 10.0, 1.0],
+          [0.0, 60.0, 10.0, 1.0],
+          [0.0, 50.0, 10.0, 1.0],
+          [0.0, 50.0, 10.0, 1.0],
+          [0.0, 60.0, 10.0, 1.0],
+          [0.0, 50.0, 10.0, 1.0]
+          ],
+        "timings": ["float",
+          0.0, // offset before starting
+          2.0, // down to up (out)
+          2.0, // up to down (out)
+          6.0, // stay down
+          2.0, // down to up (back)
+          2.0, // up to down (back)
+          0.0 // immediately start back up
+          ],
+        "sync": ["float", 14, 0.0]
+      }
+    },
+
+    {
+      "trans": [0.0, 50.0, 17.0],
+      "etype": "linear-plat",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [0.0, 50.0, 17.0, 10],
+      "lump": {
+        "name": "linear-plat-1",
+        "path": ["vector4m",
+          [0.0, 50.0, 17.0, 1.0],
+          [0.0, 50.0, 17.0, 1.0],
+          [0.0, 60.0, 17.0, 1.0],
+          [0.0, 50.0, 17.0, 1.0],
+          [0.0, 50.0, 17.0, 1.0],
+          [0.0, 60.0, 17.0, 1.0],
+          [0.0, 50.0, 17.0, 1.0]
+        ],
+        "timings": ["float",
+          1.0, // offset before starting
+          2.0, // down to up (out)
+          2.0, // up to down (out)
+          4.0, // stay down
+          2.0, // down to up (back)
+          2.0, // up to down (back)
+          1.0 // immediately start back up
+          ],
+        "sync": ["float", 14, 0.0]
+      }
+    },
+
+    {
+      "trans": [335.86, 453.17, 115.41],
+      "etype": "linear-plat",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [335.86, 453.17, 115.41, 10],
+      "lump": {
+        "name": "linear-plat-2",
+        "path": ["vector4m",
+          [335.86, 453.17, 115.41, 1.0],
+          [350.48, 449.18, 126.78, 1.0],
+          [390.94, 457.96, 146.68, 1.0]
+          ],
+        "timings": ["float",
+          2.0, // offset before starting
+          2.0, // down to up (out)
+          2.0, // up to down (out)
+          2.0, // stay down
+          2.0, // down to up (back)
+          2.0, // up to down (back)
+          2.0 // immediately start back up
+          ],
+        "sync": ["float", 8, 0.0]
+      }
+    },
+
+
+
+
+
+    {
+      "trans": [-27.52, 32.91, -145.81], // translation
+      "etype": "eco-blue", // actor type
+      "game_task": "(game-task none)", // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [-27.52, 32.91, -145.81, 10], // bounding sphere
+      "lump": {
+        "name": "test-eco"
+      }
+    },
+
+
+
+    
+    {
+      "trans": [-24.50, 33.74, -151.55], // translation
+      "etype": "launcher",  // actor type
+      "game_task": 0, // associated game task (for powercells, etc)
+      "quat" : [0, 0, 0, 1], // quaternion
+      "bsphere": [-24.50, 33.74, -151.55, 10], // bounding sphere
+      "lump": {
+        "name":"MFL-launcher-02",
+        "spring-height": ["meters", 856.0], // Set the height of the jump
+        "alt-vector":["vector4m", [543.53, 456.37, 164.00, 5.0]] // Set the landing position
+      }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "trans": [-15.2818, 15.2461, 17.136], // translation
+      "etype": "crate", // actor type
+      "game_task": "(game-task none)", // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [-15.2818, 15.2461, 17.136, 10], // bounding sphere
+      "lump": {
+        "name": "test-crate",
+        "crate-type": "'steel",
+        "eco-info": ["eco-info", "(pickup-type money)", 10]
+      }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+
+////////////////       OBJECT TOUS       ///////////////////
+
+////////////////////////////////////////////////////////
+
+
+
+
+
+
+// FAIT FREEZ QUAN ON QUITE LE LVL
+// {
+// "trans": [-153.8197, 254.1438, 255.7760], // translation
+// "etype": "flutflut",  // actor type
+// "game_task": 0, // associated game task (for powercells, etc)
+// "quat" : [0, 0, 0, 1], // quaternion
+// "bsphere": [-153.8197, 254.1438, 255.7760, 10], // bounding sphere
+// "lump": {
+// "name":"flutflutrou"
+// }
+// },
+
+
+
+
+
+
+{
+  "trans": [-150.9761, 253.5053, 277.9095],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-150.9761, 253.5053, 277.9095, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-116.3030, 253.4067, 285.0239],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-116.3030, 253.4067, 285.0239, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-78.9395, 253.5667, 239.1231],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-78.9395, 253.5667, 239.1231, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-27.1177, 253.6628, 241.7674],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-27.1177, 253.6628, 241.7674, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-36.3033, 253.5828, 210.2554],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-36.3033, 253.5828, 210.2554, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-1.9993, 253.4228, 235.4360],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-1.9993, 253.4228, 235.4360, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-123.6786, 253.4462, 196.3297],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-123.6786, 253.4462, 196.3297, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-266.1208, 253.4755, 244.4720],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-266.1208, 253.4755, 244.4720, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-252.1615, 253.4755, 237.3565],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-252.1615, 253.4755, 237.3565, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-257.4327, 253.3155, 215.7105],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-257.4327, 253.3155, 215.7105, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-248.0232, 253.3155, 245.3119],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-248.0232, 253.3155, 245.3119, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-266.1764, 253.1555, 229.7627],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-266.1764, 253.1555, 229.7627, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-95.4340, 253.6752, 222.0540],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-95.4340, 253.6752, 222.0540, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-97.5760, 253.5952, 248.6899],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-97.5760, 253.5952, 248.6899, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-158.8227, 253.7990, 237.0718],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-158.8227, 253.7990, 237.0718, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-154.5210, 253.5053, 226.0208],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-154.5210, 253.5053, 226.0208, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+},
+{
+  "trans": [-168.9497, 253.3079, 236.1353],
+  "etype": "yakow",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-168.9497, 253.3079, 236.1353, 10],
+  "lump": {
+    "name": "yakow",
+    "crate-type": "'yakow"
+  }
+}
+,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {
+  "trans": [ -118.1022, 271.7276, 319.0448 ], // translation
+  "etype": "balloonlurker", // actor type
+  "game_task": 0, // associated game task (for powercells, etc)
+  "quat": [0, 0, 0, 1], // quaternion
+  "bsphere": [ -118.1022, 271.7276, 319.0448, 10], // bounding sphere
+  "lump": {
+    "name": "energy-bay-balloonlurker-01",
+    "alt-actor": "energy-bay-fuel-cell-05",
+    "next-actor": "energy-bay-balloonlurker-02",
+    "options": ["enum-int32", "(fact-options instant-collect)"],
+    "path": [
+      "vector4m",
+      [ -118.1022, 271.7276, 319.0448, 1.0 ], 
+      [ -229.1819, 261.1402, 376.9048, 1.0 ],
+      [ -233.1204, 257.7349, 224.5453, 1.0 ],  
+      [ -138.2091, 260.2198, 153.9497, 1.0 ],
+      [ -14.9923, 256.3105, 262.5382, 1.0 ],
+      [ -86.9461, 255.4908, 252.0901, 1.0 ]
+    ],
+    "path-k": [
+      "float",
+      0
+    ]
+  }
+},
+{
+  "trans": [ -86.9461, 255.4908, 252.0901 ], // translation
+  "etype": "balloonlurker", // actor type
+  "game_task": 0, // associated game task (for powercells, etc)
+  "quat": [0, 0, 0, 1], // quaternion
+  "bsphere": [ -86.9461, 255.4908, 252.0901, 10], // bounding sphere
+  "lump": {
+    "name": "energy-bay-balloonlurker-02",
+    "alt-actor": "energy-bay-fuel-cell-05",
+    "next-actor": "energy-bay-balloonlurker-03",
+    "options": ["enum-int32", "(fact-options instant-collect)"],
+    "path": [
+      "vector4m",
+      [ -86.9461, 255.4908, 252.0901, 1.0 ], 
+      [ -118.1022, 271.7276, 319.0448, 1.0 ], 
+      [ -229.1819, 261.1402, 376.9048, 1.0 ], 
+      [ -233.1204, 257.7349, 224.5453, 1.0 ], 
+      [ -138.2091, 260.2198, 153.9497, 1.0 ],  
+      [ -14.9923, 256.3105, 262.5382, 1.0 ] 
+    ],
+    "path-k": [
+      "float",
+      0
+    ]
+  }
+},
+{
+  "trans": [ -14.9923, 256.3105, 262.5382 ], // translation
+  "etype": "balloonlurker", // actor type
+  "game_task": 0, // associated game task (for powercells, etc)
+  "quat": [0, 0, 0, 1], // quaternion
+  "bsphere": [ -14.9923, 256.3105, 262.5382, 10], // bounding sphere
+  "lump": {
+    "name": "energy-bay-balloonlurker-03",
+    "alt-actor": "energy-bay-fuel-cell-05",
+    "next-actor": "energy-bay-balloonlurker-04",
+    "options": ["enum-int32", "(fact-options instant-collect)"],
+    "path": [
+      "vector4m",
+      [ -14.9923, 256.3105, 262.5382, 1.0 ], 
+      [ -86.9461, 255.4908, 252.0901, 1.0 ], 
+      [ -118.1022, 271.7276, 319.0448, 1.0 ], 
+      [ -229.1819, 261.1402, 376.9048, 1.0 ], 
+      [ -233.1204, 257.7349, 224.5453, 1.0 ],  
+      [ -138.2091, 260.2198, 153.9497, 1.0 ] 
+    ],
+    "path-k": [
+      "float",
+      0
+    ]
+  }
+},
+{
+  "trans": [ -138.2091, 260.2198, 153.9497 ], // translation
+  "etype": "balloonlurker", // actor type
+  "game_task": 0, // associated game task (for powercells, etc)
+  "quat": [0, 0, 0, 1], // quaternion
+  "bsphere": [ -138.2091, 260.2198, 153.9497, 10], // bounding sphere
+  "lump": {
+    "name": "energy-bay-balloonlurker-04",
+    "alt-actor": "energy-bay-fuel-cell-05",
+    "next-actor": "energy-bay-balloonlurker-05",
+    "options": ["enum-int32", "(fact-options instant-collect)"],
+    "path": [
+      "vector4m",
+      [ -138.2091, 260.2198, 153.9497, 1.0 ], 
+      [ -14.9923, 256.3105, 262.5382, 1.0 ], 
+      [ -86.9461, 255.4908, 252.0901, 1.0 ], 
+      [ -118.1022, 271.7276, 319.0448, 1.0 ], 
+      [ -229.1819, 261.1402, 376.9048, 1.0 ],  
+      [ -233.1204, 257.7349, 224.5453, 1.0 ] 
+    ],
+    "path-k": [
+      "float",
+      0
+    ]
+  }
+},
+{
+  "trans": [ -233.1204, 257.7349, 224.5453 ], // translation
+  "etype": "balloonlurker", // actor type
+  "game_task": 0, // associated game task (for powercells, etc)
+  "quat": [0, 0, 0, 1], // quaternion
+  "bsphere": [ -233.1204, 257.7349, 224.5453, 10], // bounding sphere
+  "lump": {
+    "name": "energy-bay-balloonlurker-05",
+    "alt-actor": "energy-bay-fuel-cell-05",
+    "next-actor": "energy-bay-balloonlurker-06",
+    "options": ["enum-int32", "(fact-options instant-collect)"],
+    "path": [
+      "vector4m",
+      [ -233.1204, 257.7349, 224.5453, 1.0 ], 
+      [ -138.2091, 260.2198, 153.9497, 1.0 ], 
+      [ -14.9923, 256.3105, 262.5382, 1.0 ], 
+      [ -86.9461, 255.4908, 252.0901, 1.0 ], 
+      [ -118.1022, 271.7276, 319.0448, 1.0 ],  
+      [ -229.1819, 261.1402, 376.9048, 1.0 ] 
+    ],
+    "path-k": [
+      "float",
+      0
+    ]
+  }
+},
+{
+  "trans": [ -229.1819, 261.1402, 376.9048 ], // translation
+  "etype": "balloonlurker", // actor type
+  "game_task": 0, // associated game task (for powercells, etc)
+  "quat": [0, 0, 0, 1], // quaternion
+  "bsphere": [ -229.1819, 261.1402, 376.9048, 10], // bounding sphere
+  "lump": {
+    "name": "energy-bay-balloonlurker-06",
+    "alt-actor": "energy-bay-fuel-cell-05",
+    "next-actor": "energy-bay-balloonlurker-07",
+    "options": ["enum-int32", "(fact-options instant-collect)"],
+    "path": [
+      "vector4m",
+      [ -229.1819, 261.1402, 376.9048, 1.0 ], 
+      [ -233.1204, 257.7349, 224.5453, 1.0 ], 
+      [ -138.2091, 260.2198, 153.9497, 1.0 ], 
+      [ -14.9923, 256.3105, 262.5382, 1.0 ], 
+      [ -86.9461, 255.4908, 252.0901, 1.0 ],  
+      [ -118.1022, 271.7276, 319.0448, 1.0 ] 
+    ],
+    "path-k": [
+      "float",
+      0
+    ]
+  }
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////// GO LE PALAI
+
+
+        {
+      "trans": [ -142.8351, 255.6173, 122.5618],
+      "etype": "linear-plat",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -142.8351, 255.6173, 122.5618, 10],
+      "lump": {
+        "name": "linear-plat-1",
+        "path": ["vector4m",
+          [ -142.8351, 255.6173, 122.5618, 1.0],
+          [ -142.8352, 255.6173, 122.5618, 1.0],
+          [ -137.2244, 256.0973, 123.1433, 1.0],
+          [ -182.4499, 451.6573, 75.9173, 1.0],
+          [ -185.5005, 450.7364, 73.9166, 1.0],
+          [-190.3570, 452.7912, 94.4297, 1.0],
+          [-181.6870, 620.7501, 54.4134, 1.0]
+        ],
+        "timings": ["float",
+          2.0, // offset before starting
+          2.0, // down to up (out)
+          2.0, // up to down (out)
+          14.0, // stay down
+          2.0, // down to up (back)
+          2.0, // up to down (back)
+          6.0 // immediately start back up
+          ],
+        "sync": ["float", 14, 0.0]
+      }
+    },
+
+
+
+
+
+
+//////////////// ENNEMIE ENEMI
+
+
+
+
+
+
+
+
+        {
+      "trans": [ -142.8351, 255.6173, 122.5618],
+      "etype": "puffer",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -142.8351, 255.6173, 122.5618, 10],
+      "lump": {
+        "name": "linear-plat-1",
+        "path": ["vector4m",
+          [ -142.8351, 255.6173, 122.5618, 1.0],
+          [ -142.8352, 255.6173, 122.5618, 1.0],
+          [ -137.2244, 256.0973, 123.1433, 1.0],
+          [-190.3570, 452.7912, 94.4297, 1.0],
+          [ -181.1682, 454.9460, 95.1992, 1.0],
+          [-190.3570, 452.7912, 94.4297, 1.0],
+          [-181.6870, 620.7501, 54.4134, 1.0]
+        ],
+        "timings": ["float",
+          2.0, // offset before starting
+          2.0, // down to up (out)
+          2.0, // up to down (out)
+          14.0, // stay down
+          2.0, // down to up (back)
+          2.0, // up to down (back)
+          6.0 // immediately start back up
+          ],
+        "sync": ["float", 14, 0.0]
+      }
+    },
+
+
+
+
+
+
+{
+  "trans": [  -182.9365, 475.1881, 56.9112], // Point de départ
+  "etype": "slide-control",
+  "game_task": 0,
+  "quat": [0, 0, 0, 1],
+  "bsphere": [ -191.6764, 452.4278, 98.1224, 10],
+  "lump": {
+    "name": "lltest2-slide-control-1",
+    "path": ["vector4m",
+      [  -182.9365, 475.1881, 56.9112, 1.0],  // Descente douce
+      [-206.15, 355.96, 261.16, 1.0],  // Courbe intermédiaire
+      [-275.40, 261.59, 370.82, 1.0],  // Accélération
+      [ -287.3960, 253.5928, 388.6066, 1.0]   // Arrivée en bas
+    ],
+    "vis-dist": ["meters", 2000.0]
+  }
+},
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "trans": [-120.6279, 254.0280, 254.0857],
+      "etype": "babak",
+      "game_task": 0,
+      "quat" : [0, 0, 0, 1],
+      "bsphere": [-120.6279, 254.0280, 254.0857, 10],
+      "lump": {
+        "name": "test-babak",
+        "vis-dist": ["meters", 200.0],
+        "cam-notice-dist": ["meters", 30.0],
+        "idle-distance": ["meters", 50.0],
+        "cam-vert": ["meters", 8.0],
+        "cam-horz": ["meters", 20.0],
+        "path": ["vector3m", // I am pretty sure game will crash if there is no path for an enemy. So just add one. You can use "path-actor" if you want to use another actor's path.
+ [-130.6279, 254.0280, 244.0857],  // Point 1 (départ)
+    [-140.6279, 254.0280, 250.0857],  // Point 2
+    [-150.6279, 254.0280, 260.0857],  // Point 3
+    [-140.6279, 254.0280, 270.0857],  // Point 4
+    [-130.6279, 254.0280, 276.0857],  // Point 5
+    [-120.6279, 254.0280, 270.0857],  // Point 6
+    [-110.6279, 254.0280, 260.0857],  // Point 7
+    [-120.6279, 254.0280, 250.0857],  // Point 8
+    [-130.6279, 254.0280, 244.0857]   // Retour au départ
+          ],
+        "nav-mesh-sphere": ["vector4m", // You can define spheres that will be added to the navmesh of the enemy. Enemies of the navmesh will avoid these spheres - like they avoid each other.
+          [-120.6279, 254.0280, 254.0857, 1.0]
+          ]
+      }
+    },
+
+
+
+
+    {
+      "trans": [  -146.7599, 253.5777, 362.8372],
+      "etype": "ice-cube",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [  -146.7599, 253.5777, 362.8372, 10],
+      "lump": {
+        "name": "crystalc-ice-cube-01",
+        "vis-dist": ["meters", 200.0],
+        "cam-notice-dist": ["meters", 30.0],
+        "idle-distance": ["meters", 80.0],
+        "cam-vert": ["meters", 8.0],
+        "cam-horz": ["meters", 20.0],
+        "path": [
+          "vector3m",
+[-120.6279, 254.0280, 254.0857],  // Point 1 (départ)
+    [-131.8500, 254.0280, 249.8357],  // Point 2
+    [-138.7283, 252.1280, 230.3257],  // Point 3
+    [-124.1177, 252.6280, 238.1257],  // Point 4
+    [-114.6950, 252.4280, 239.1657],  // Point 5
+    [-120.6279, 254.0280, 254.0857]   // Retour au départ
+        ],
+"nav-mesh-sphere": [
+  "vector4m",
+  [-180.91, 254.0280, 250.1457, 2.0],
+  [-122.43, 254.0280, 230.3957, 1.1],
+  [-124.78, 254.0280, 234.6857, 1.1],
+  [-128.72, 254.0280, 227.4257, 1.1],
+  [-131.28, 254.0280, 231.4957, 1.1],
+  [-130.37, 254.0280, 231.8357, 1.1],
+  [-137.1, 254.0280, 228.8057, 1.1],
+  [-134.98, 254.0280, 224.5357, 1.1]
+]
+,
+"path-k": [
+  "float",
+  0
+]
+,
+
+        "light-index": ["int32", 7],
+        "eco-info": ["int32", 4, 1]
+      }
+    },
+
+
+
+
+
+
+
+
+
+    {
+      "trans": [  -112.1219, 253.6560, 361.1888],
+      "etype": "ice-cube",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [  -112.1219, 253.6560, 361.1888, 10],
+      "lump": {
+        "name": "crystalc-ice-cube-01",
+        "vis-dist": ["meters", 200.0],
+        "cam-notice-dist": ["meters", 30.0],
+        "idle-distance": ["meters", 80.0],
+        "cam-vert": ["meters", 8.0],
+        "cam-horz": ["meters", 20.0],
+        "path": [
+          "vector3m",
+[-120.6279, 254.0280, 254.0857],  // Point 1 (départ)
+    [-131.8500, 254.0280, 249.8357],  // Point 2
+    [-138.7283, 252.1280, 230.3257],  // Point 3
+    [-124.1177, 252.6280, 238.1257],  // Point 4
+    [-114.6950, 252.4280, 239.1657],  // Point 5
+    [-120.6279, 254.0280, 254.0857]   // Retour au départ
+        ],
+"nav-mesh-sphere": [
+  "vector4m",
+  [-180.91, 254.0280, 250.1457, 2.0],
+  [-122.43, 254.0280, 230.3957, 1.1],
+  [-124.78, 254.0280, 234.6857, 1.1],
+  [-128.72, 254.0280, 227.4257, 1.1],
+  [-131.28, 254.0280, 231.4957, 1.1],
+  [-130.37, 254.0280, 231.8357, 1.1],
+  [-137.1, 254.0280, 228.8057, 1.1],
+  [-134.98, 254.0280, 224.5357, 1.1]
+]
+,
+"path-k": [
+  "float",
+  0
+]
+,
+
+        "light-index": ["int32", 7],
+        "eco-info": ["int32", 4, 1]
+      }
+    },
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+
+////////////////       ECO BLEU      ///////////////////
+
+////////////////////////////////////////////////////////
+
+
+
+
+
+    {
+      "trans": [-129.72, 261.00, 318.60], // translation
+      "etype": "eco-blue", // actor type
+      "game_task": "(game-task none)", // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [-129.72, 261.00, 318.60, 10], // bounding sphere
+      "lump": {
+        "name": "eco-blue"
+      }
+    },
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+
+////////////////       PILE D ENERGIE  6 en tous     ///////////////////
+
+////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+// translation YAKOW LOOPING
+
+
+    {
+      "trans": [-221.5674, 295.7857, 244.8165], // translation
+      "etype": "fuel-cell", // actor type
+      "game_task": 10, // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [-221.5674, 295.7857, 244.8165, 10], // bounding sphere
+      "lump": {
+        "name": "l1-fuel-cell-01", 
+        "eco-info": ["int32", 6, 10],
+        "movie-pos": ["vector4m", [-221.5674, 295.7857, 244.8165, 4.0]]
+      }
+    },
+
+
+
+
+// translation FESEAU ECO JUNGLE GROS LOOPING
+
+    {
+      "trans": [ -2.5813, 344.4271, 365.8039], // translation
+      "etype": "fuel-cell", // actor type
+      "game_task": 3, // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [ -2.5813, 344.4271, 365.8039, 10], // bounding sphere
+      "lump": {
+        "name": "l1-fuel-cell-01", 
+        "eco-info": ["int32", 6, 3],
+        "movie-pos": ["vector4m", [ -2.5813, 304.4271, 365.8039, 4.0]]
+      }
+    },
+
+
+
+
+
+// translation fishgame PECHEUR    A LA FIN DU NIVEAU ABRIVILLE
+
+
+
+        {
+      "trans": [ -139.9894, 255.9110, 72.9374], // translation
+      "etype": "fuel-cell", // actor type
+      "game_task": 5, // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [ -139.9894, 255.9110, 72.9374, 10], // bounding sphere
+      "lump": {
+        "name": "l1-fuel-cell-01", 
+        "eco-info": ["int32", 6, 5],
+        "movie-pos": ["vector4m", [ -139.9894, 255.9110, 72.9374, 4.0]]
+      }
+    },
+
+
+
+
+
+
+    // translation PURPLE VOLANT  SUR UN TOIT D ABRIVILLE
+
+
+
+        {
+      "trans": [-326.0110, 281.6817, 253.1377], // translation
+      "etype": "fuel-cell", // actor type
+      "game_task": 53, // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [-326.0110, 281.6817, 253.1377, 10], // bounding sphere
+      "lump": {
+        "name": "l1-fuel-cell-01", 
+        "eco-info": ["int32", 6, 53],
+        "movie-pos": ["vector4m", [-326.0110, 281.6817, 253.1377, 4.0]]
+      }
+    },
+
+
+
+
+
+    // translation LES TOP AVEUGLE    SUR LE PLAFOND
+
+
+
+        {
+      "trans": [ -128.2561, 288.4229, 343.7749], // translation
+      "etype": "fuel-cell", // actor type
+      "game_task": 54, // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [ -128.2561, 288.4229, 343.7749, 10], // bounding sphere
+      "lump": {
+        "name": "l1-fuel-cell-01", 
+        "eco-info": ["int32", 6, 54],
+        "movie-pos": ["vector4m", [ -128.2561, 288.4229, 343.7749, 4.0]]
+      }
+    },
+
+
+
+
+
+    // translation RONJEUR DE LA GROTE SPIDER     SUR LE PALAIT D ABRIVILLE
+
+
+
+        {
+      "trans": [-145.0720, 414.7776, -107.2640], // translation
+      "etype": "fuel-cell", // actor type
+      "game_task": 78, // associated game task (for powercells, etc)
+      "quat": [0, 0, 0, 1], // quaternion
+      "bsphere": [-145.0720, 414.7776, -107.2640, 10], // bounding sphere
+      "lump": {
+        "name": "l1-fuel-cell-01", 
+        "eco-info": ["int32", 6, 78],
+        "movie-pos": ["vector4m", [-145.0720, 414.7776, -107.2640, 4.0]]
+      }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+
+////////////////       ORBE 386 ENVIRON      ///////////////////
+
+////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+  {
+    "trans": [-139.4207, 261.5972, 317.7291], 
+    "etype": "money", 
+    "game_task": "(game-task none)", 
+    "quat": [0, 0, 0, 1], 
+    "bsphere": [-139.4207, 261.5972, 317.7291, 10], 
+    "lump": {
+      "name": "money"
+    }
+  },
+  {
+    "trans": [-150.1467, 260.2448, 317.6303], 
+    "etype": "money", 
+    "game_task": "(game-task none)", 
+    "quat": [0, 0, 0, 1], 
+    "bsphere": [-150.1467, 260.2448, 317.6303, 10], 
+    "lump": {
+      "name": "money"
+    }
+  },
+  {
+    "trans": [-163.2359, 258.0075, 317.1304], 
+    "etype": "money", 
+    "game_task": "(game-task none)", 
+    "quat": [0, 0, 0, 1], 
+    "bsphere": [-163.2359, 258.0075, 317.1304, 10], 
+    "lump": {
+      "name": "money"
+    }
+  },
+
+
+
+
+
+
+
+
+
+
+
+  { "trans": [-172.6757, 258.2246, 326.5866], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-172.6757, 258.2246, 326.5866, 10], "lump": { "name": "money" }},
+  { "trans": [-169.9522, 257.9999, 316.1465], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-169.9522, 257.9999, 316.1465, 10], "lump": { "name": "money" }},
+  { "trans": [-182.1670, 258.0101, 332.9647], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-182.1670, 258.0101, 332.9647, 10], "lump": { "name": "money" }},
+  { "trans": [-187.5037, 257.0224, 334.9147], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-187.5037, 257.0224, 334.9147, 10], "lump": { "name": "money" }},
+  { "trans": [-196.8713, 257.4223, 337.6664], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-196.8713, 257.4223, 337.6664, 10], "lump": { "name": "money" }},
+  { "trans": [-206.9647, 257.4638, 327.5414], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-206.9647, 257.4638, 327.5414, 10], "lump": { "name": "money" }},
+  { "trans": [-210.0488, 258.1837, 314.6135], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-210.0488, 258.1837, 314.6135, 10], "lump": { "name": "money" }},
+  { "trans": [-204.3346, 257.5788, 301.9982], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-204.3346, 257.5788, 301.9982, 10], "lump": { "name": "money" }},
+  { "trans": [-195.2499, 257.9787, 298.8111], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-195.2499, 257.9787, 298.8111, 10], "lump": { "name": "money" }},
+  { "trans": [-185.0138, 258.2987, 298.4033], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-185.0138, 258.2987, 298.4033, 10], "lump": { "name": "money" }},
+  { "trans": [-174.4055, 258.1730, 307.2619], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-174.4055, 258.1730, 307.2619, 10], "lump": { "name": "money" }},
+  { "trans": [-219.3179, 257.8811, 296.3314], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-219.3179, 257.8811, 296.3314, 10], "lump": { "name": "money" }},
+  { "trans": [-238.7427, 258.5210, 283.6873], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-238.7427, 258.5210, 283.6873, 10], "lump": { "name": "money" }},
+  { "trans": [-274.2582, 257.8811, 269.6463], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-274.2582, 257.8811, 269.6463, 10], "lump": { "name": "money" }},
+  { "trans": [-313.3462, 258.2118, 256.2989], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-313.3462, 258.2118, 256.2989, 10], "lump": { "name": "money" }},
+  { "trans": [-311.3112, 257.2847, 378.1699], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-311.3112, 257.2847, 378.1699, 10], "lump": { "name": "money" }},
+  { "trans": [-310.4968, 257.0448, 369.7869], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-310.4968, 257.0448, 369.7869, 10], "lump": { "name": "money" }},
+  { "trans": [-315.8111, 256.7248, 371.8490], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-315.8111, 256.7248, 371.8490, 10], "lump": { "name": "money" }},
+  { "trans": [-314.4343, 257.1248, 365.6366], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-314.4343, 257.1248, 365.6366, 10], "lump": { "name": "money" }},
+  { "trans": [-332.8047, 277.1087, 359.9912], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-332.8047, 277.1087, 359.9912, 10], "lump": { "name": "money" }},
+  { "trans": [-331.3288, 276.7142, 370.3922], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-331.3288, 276.7142, 370.3922, 10], "lump": { "name": "money" }},
+  { "trans": [-327.0363, 278.9883, 378.7888], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-327.0363, 278.9883, 378.7888, 10], "lump": { "name": "money" }},
+  { "trans": [-323.6241, 278.5365, 389.6648], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-323.6241, 278.5365, 389.6648, 10], "lump": { "name": "money" }},
+  { "trans": [-332.3268, 278.8357, 364.1748], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-332.3268, 278.8357, 364.1748, 10], "lump": { "name": "money" }},
+  { "trans": [-295.8815, 283.3863, 330.2247], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-295.8815, 283.3863, 330.2247, 10], "lump": { "name": "money" }},
+  { "trans": [-294.1315, 285.6817, 330.2302], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-294.1315, 285.6817, 330.2302, 10], "lump": { "name": "money" }},
+  { "trans": [-296.2675, 285.8710, 332.5983], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-296.2675, 285.8710, 332.5983, 10], "lump": { "name": "money" }},
+  { "trans": [-291.2518, 286.9840, 333.5817], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-291.2518, 286.9840, 333.5817, 10], "lump": { "name": "money" }},
+  { "trans": [-292.3903, 287.1950, 336.7228], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-292.3903, 287.1950, 336.7228, 10], "lump": { "name": "money" }},
+  { "trans": [-294.9014, 284.8677, 304.4812], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-294.9014, 284.8677, 304.4812, 10], "lump": { "name": "money" }},
+  { "trans": [-293.0043, 284.6137, 306.1085], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-293.0043, 284.6137, 306.1085, 10], "lump": { "name": "money" }},
+  { "trans": [-292.7603, 284.6455, 307.1871], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-292.7603, 284.6455, 307.1871, 10], "lump": { "name": "money" }},
+  { "trans": [-293.1916, 284.5227, 309.8227], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-293.1916, 284.5227, 309.8227, 10], "lump": { "name": "money" }},
+  { "trans": [-296.3705, 284.5185, 307.0514], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-296.3705, 284.5185, 307.0514, 10], "lump": { "name": "money" }},
+  { "trans": [-347.3280, 284.2718, 198.4805], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-347.3280, 284.2718, 198.4805, 10], "lump": { "name": "money" }},
+  { "trans": [-340.7185, 284.6543, 200.2448], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-340.7185, 284.6543, 200.2448, 10], "lump": { "name": "money" }},
+  { "trans": [-333.0178, 285.9460, 203.6617], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-333.0178, 285.9460, 203.6617, 10], "lump": { "name": "money" }},
+  { "trans": [-326.3049, 285.3835, 206.9619], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-326.3049, 285.3835, 206.9619, 10], "lump": { "name": "money" }},
+  { "trans": [-321.1600, 282.6784, 212.5319], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-321.1600, 282.6784, 212.5319, 10], "lump": { "name": "money" }},
+  { "trans": [-313.1826, 275.6372, 221.3482], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-313.1826, 275.6372, 221.3482, 10], "lump": { "name": "money" }},
+  { "trans": [-309.1369, 275.6702, 223.5051], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-309.1369, 275.6702, 223.5051, 10], "lump": { "name": "money" }},
+  { "trans": [-304.3936, 275.6679, 225.2621], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-304.3936, 275.6679, 225.2621, 10], "lump": { "name": "money" }},
+  { "trans": [-300.5336, 275.6216, 226.9881], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-300.5336, 275.6216, 226.9881, 10], "lump": { "name": "money" }},
+  { "trans": [-321.2998, 260.5906, 186.3654], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-321.2998, 260.5906, 186.3654, 10], "lump": { "name": "money" }},
+  { "trans": [-345.5569, 259.6725, 171.6360], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-345.5569, 259.6725, 171.6360, 10], "lump": { "name": "money" }},
+  { "trans": [-361.5425, 258.0472, 155.8217], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-361.5425, 258.0472, 155.8217, 10], "lump": { "name": "money" }},
+  { "trans": [-365.5390, 256.5444, 140.1832], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-365.5390, 256.5444, 140.1832, 10], "lump": { "name": "money" }},
+  { "trans": [-367.4658, 256.5431, 106.2607], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-367.4658, 256.5431, 106.2607, 10], "lump": { "name": "money" }},
+  { "trans": [-296.0845, 256.5773, 202.1623], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-296.0845, 256.5773, 202.1623, 10], "lump": { "name": "money" }},
+  { "trans": [-282.7557, 260.3107, 190.4211], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-282.7557, 260.3107, 190.4211, 10], "lump": { "name": "money" }},
+  { "trans": [-256.9354, 258.0247, 164.8221], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-256.9354, 258.0247, 164.8221, 10], "lump": { "name": "money" }},
+  { "trans": [-227.8584, 258.0079, 142.6596], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-227.8584, 258.0079, 142.6596, 10], "lump": { "name": "money" }},
+  { "trans": [-189.8651, 258.0216, 126.6747], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-189.8651, 258.0216, 126.6747, 10], "lump": { "name": "money" }},
+  { "trans": [-178.2736, 258.0162, 153.4923], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-178.2736, 258.0162, 153.4923, 10], "lump": { "name": "money" }},
+  { "trans": [-163.9555, 256.5470, 152.2116], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-163.9555, 256.5470, 152.2116, 10], "lump": { "name": "money" }},
+  { "trans": [-129.2444, 258.0282, 150.1492], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-129.2444, 258.0282, 150.1492, 10], "lump": { "name": "money" }},
+  { "trans": [-130.6444, 258.0289, 132.9645], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-130.6444, 258.0289, 132.9645, 10], "lump": { "name": "money" }},
+  { "trans": [-130.3496, 256.5841, 111.8178], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-130.3496, 256.5841, 111.8178, 10], "lump": { "name": "money" }},
+  { "trans": [-130.4328, 256.5903, 97.3128], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-130.4328, 256.5903, 97.3128, 10], "lump": { "name": "money" }},
+  { "trans": [-129.5273, 256.5818, 81.7625], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-129.5273, 256.5818, 81.7625, 10], "lump": { "name": "money" }},
+  { "trans": [-128.5883, 260.0316, 70.6421], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-128.5883, 260.0316, 70.6421, 10], "lump": { "name": "money" }},
+  { "trans": [-128.3584, 255.8786, 70.0104], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-128.3584, 255.8786, 70.0104, 10], "lump": { "name": "money" }},
+  { "trans": [-128.9937, 246.9245, 69.8948], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-128.9937, 246.9245, 69.8948, 10], "lump": { "name": "money" }},
+  { "trans": [-130.1314, 234.3418, 70.6276], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-130.1314, 234.3418, 70.6276, 10], "lump": { "name": "money" }},
+  { "trans": [-126.2456, 220.8551, 78.1743], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-126.2456, 220.8551, 78.1743, 10], "lump": { "name": "money" }},
+  { "trans": [-123.7474, 209.3760, 79.4441], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-123.7474, 209.3760, 79.4441, 10], "lump": { "name": "money" }},
+
+
+
+{ "trans": [-99.8144, 256.5512, 155.2844], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-99.8144, 256.5512, 155.2844, 10], "lump": { "name": "money" }},
+{ "trans": [-81.5415, 258.2515, 153.0604], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-81.5415, 258.2515, 153.0604, 10], "lump": { "name": "money" }},
+{ "trans": [-68.9941, 258.2496, 125.1273], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-68.9941, 258.2496, 125.1273, 10], "lump": { "name": "money" }},
+{ "trans": [-37.2079, 258.0085, 139.1121], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-37.2079, 258.0085, 139.1121, 10], "lump": { "name": "money" }},
+{ "trans": [-14.7807, 258.0140, 154.6147], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-14.7807, 258.0140, 154.6147, 10], "lump": { "name": "money" }},
+{ "trans": [4.6872, 258.2465, 172.6000], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [4.6872, 258.2465, 172.6000, 10], "lump": { "name": "money" }},
+{ "trans": [24.2889, 260.3926, 190.7666], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [24.2889, 260.3926, 190.7666, 10], "lump": { "name": "money" }},
+{ "trans": [54.6844, 258.0166, 189.7288], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [54.6844, 258.0166, 189.7288, 10], "lump": { "name": "money" }},
+{ "trans": [94.8879, 257.9944, 163.1792], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [94.8879, 257.9944, 163.1792, 10], "lump": { "name": "money" }},
+{ "trans": [98.1629, 258.0105, 165.1008], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [98.1629, 258.0105, 165.1008, 10], "lump": { "name": "money" }},
+{ "trans": [110.9358, 256.5410, 161.3551], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [110.9358, 256.5410, 161.3551, 10], "lump": { "name": "money" }},
+{ "trans": [112.1236, 256.5436, 164.2792], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [112.1236, 256.5436, 164.2792, 10], "lump": { "name": "money" }},
+{ "trans": [35.0507, 256.5039, 210.9815], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [35.0507, 256.5039, 210.9815, 10], "lump": { "name": "money" }},
+{ "trans": [51.0520, 258.3275, 245.6560], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [51.0520, 258.3275, 245.6560, 10], "lump": { "name": "money" }},
+{ "trans": [61.6948, 260.3912, 279.5009], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [61.6948, 260.3912, 279.5009, 10], "lump": { "name": "money" }},
+{ "trans": [49.3265, 256.5468, 384.5518], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [49.3265, 256.5468, 384.5518, 10], "lump": { "name": "money" }},
+{ "trans": [45.9561, 256.5494, 383.2092], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [45.9561, 256.5494, 383.2092, 10], "lump": { "name": "money" }},
+{ "trans": [51.4930, 256.6024, 377.4366], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [51.4930, 256.6024, 377.4366, 10], "lump": { "name": "money" }},
+{ "trans": [48.1891, 256.6224, 375.9867], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [48.1891, 256.6224, 375.9867, 10], "lump": { "name": "money" }},
+{ "trans": [40.0635, 258.1990, 258.7079], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [40.0635, 258.1990, 258.7079, 10], "lump": { "name": "money" }},
+{ "trans": [7.6335, 258.1973, 270.3166], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [7.6335, 258.1973, 270.3166, 10], "lump": { "name": "money" }},
+{ "trans": [-18.2037, 258.1963, 284.0125], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-18.2037, 258.1963, 284.0125, 10], "lump": { "name": "money" }},
+{ "trans": [-43.7112, 258.1971, 299.8283], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-43.7112, 258.1971, 299.8283, 10], "lump": { "name": "money" }},
+{ "trans": [-49.3431, 257.9977, 315.0372], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-49.3431, 257.9977, 315.0372, 10], "lump": { "name": "money" }},
+{ "trans": [-66.0851, 258.0020, 335.2103], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-66.0851, 258.0020, 335.2103, 10], "lump": { "name": "money" }},
+{ "trans": [-82.5718, 258.0021, 330.6139], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-82.5718, 258.0021, 330.6139, 10], "lump": { "name": "money" }},
+{ "trans": [-86.0641, 258.0024, 315.6850], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-86.0641, 258.0024, 315.6850, 10], "lump": { "name": "money" }},
+{ "trans": [-74.8163, 258.0024, 299.3687], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-74.8163, 258.0024, 299.3687, 10], "lump": { "name": "money" }},
+{ "trans": [-58.0335, 258.0050, 301.7144], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-58.0335, 258.0050, 301.7144, 10], "lump": { "name": "money" }},
+{ "trans": [-53.9893, 258.0078, 329.3137], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-53.9893, 258.0078, 329.3137, 10], "lump": { "name": "money" }},
+{ "trans": [-107.0723, 260.6092, 317.5699], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-107.0723, 260.6092, 317.5699, 10], "lump": { "name": "money" }},
+{ "trans": [-120.0382, 262.0765, 318.1846], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-120.0382, 262.0765, 318.1846, 10], "lump": { "name": "money" }},
+{ "trans": [-145.1050, 255.2637, 251.1758], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-145.1050, 255.2637, 251.1758, 10], "lump": { "name": "money" }},
+{ "trans": [-130.9313, 255.2737, 249.7322], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-130.9313, 255.2737, 249.7322, 10], "lump": { "name": "money" }},
+{ "trans": [-140.1096, 255.2727, 247.4308], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-140.1096, 255.2727, 247.4308, 10], "lump": { "name": "money" }},
+{ "trans": [-136.6902, 255.2503, 249.3204], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-136.6902, 255.2503, 249.3204, 10], "lump": { "name": "money" }},
+{ "trans": [-127.9174, 255.2619, 251.4521], "etype": "money", "game_task": "(game-task none)", "quat": [0, 0, 0, 1], "bsphere": [-127.9174, 255.2619, 251.4521, 10], "lump": { "name": "money" }},
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+
+////////////////       CAISSE BOITE BOX       ///////////////////
+
+////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////       CAISSE DE THUNE
+
+
+
+
+
+
+{
+  "trans": [ -196.4484, 421.8086, 156.2239],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [ -196.4484, 421.8086, 156.2239, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-149.9068, 399.9634, -73.1757],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-149.9068, 399.9634, -73.1757, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-147.4526, 402.1053, -78.3178],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-147.4526, 402.1053, -78.3178, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-151.0905, 402.2019, -78.4808],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-151.0905, 402.2019, -78.4808, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-161.3453, 400.3515, -40.3247],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-161.3453, 400.3515, -40.3247, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-161.3705, 401.3556, -40.3367],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-161.3705, 401.3556, -40.3367, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-166.4746, 400.9326, -14.5387],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-166.4746, 400.9326, -14.5387, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-168.3557, 400.9482, -15.2270],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-168.3557, 400.9482, -15.2270, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-167.3531, 402.3124, -15.1460],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-167.3531, 402.3124, -15.1460, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-178.3714, 406.7301, 18.7199],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-178.3714, 406.7301, 18.7199, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-188.0455, 441.2775, 77.7501],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-188.0455, 441.2775, 77.7501, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-320.8019, 272.0704, 286.9005],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-320.8019, 272.0704, 286.9005, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-320.7678, 273.5141, 286.9527],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-320.7678, 273.5141, 286.9527, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-320.7293, 275.1138, 287.0493],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-320.7293, 275.1138, 287.0493, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-219.1854, 265.3807, 256.1171],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-219.1854, 265.3807, 256.1171, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-222.3852, 281.3192, 259.8718],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-222.3852, 281.3192, 259.8718, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-217.9671, 299.4229, 257.3487],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-217.9671, 299.4229, 257.3487, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-208.1480, 282.9456, 273.2981],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-208.1480, 282.9456, 273.2981, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-190.3050, 279.3714, 214.7550],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-190.3050, 279.3714, 214.7550, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-195.8622, 312.3133, 244.9835],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-195.8622, 312.3133, 244.9835, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-166.0238, 285.5895, 250.6071],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-166.0238, 285.5895, 250.6071, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-11.4135, 253.7077, 357.1403],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-11.4135, 253.7077, 357.1403, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [25.7060, 297.9982, 390.1088],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [25.7060, 297.9982, 390.1088, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-9.6652, 345.5926, 358.3402],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-9.6652, 345.5926, 358.3402, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [-54.5237, 297.1813, 343.4841],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [-54.5237, 297.1813, 343.4841, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [24.1089, 304.7117, 325.9278],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [24.1089, 304.7117, 325.9278, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [65.8524, 281.3718, 253.2723],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [65.8524, 281.3718, 253.2723, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+},
+{
+  "trans": [47.9227, 274.0580, 227.3132],
+  "etype": "crate",
+  "game_task": "(game-task none)",
+  "quat": [0, 0, 0, 1],
+  "bsphere": [47.9227, 274.0580, 227.3132, 10],
+  "lump": {
+    "name": "test-crate",
+    "crate-type": "'steel",
+    "eco-info": ["eco-info", "(pickup-type money)", 10]
+  }
+}
+,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////// FAIT LE TOUR DE LA MAP
+
+ {
+      "trans": [ -129.8275, 260.5165, 309.3023],
+      "etype": "linear-plat",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [ -129.8275, 260.5165, 309.3023, 10],
+      "lump": {
+        "name": "linear-plat-0",
+        "path": ["vector4m",
+          [ -129.8275, 260.5165, 309.3023, 1.0],
+          [ -186.1661, 287.3236, 305.0965, 1.0],
+          [-315.0752, 261.5352, 257.2394, 1.0],
+          [-302.4435, 261.7291, 208.4240, 1.0],
+          [ -251.1681, 260.1402, 164.5585, 1.0],
+          [-74.3468, 284.1222, 173.1768, 1.0],
+          [ -12.1781, 258.6332, 279.6234, 1.0],
+          [ -108.3376, 263.7440, 315.6034, 1.0],
+          [ -118.3376, 263.7440, 315.6034, 1.0],
+          [ -129.8275, 260.5165, 309.3023, 1.0],
+          [ -186.1661, 287.3236, 305.0965, 1.0]
+          ], 
+        "timings": ["float",
+          1.0, // offset before starting
+          2.0, // down to up (out)
+          2.0, // up to down (out)
+          2.0, // stay down
+          1.0, // down to up (back)
+          1.0, // up to down (back)
+          6.0 // immediately start back up
+          ],
+        "sync": ["float", 14, 0.0]
+      }
+    },
+
+
+
+
+
+
+
+
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-0",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-1",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        3.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-2",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        4.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-3",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        5.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-4",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        6.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-5",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        7.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-6",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        8.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-7",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        9.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-8",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        10.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-9",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        11.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-10",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        12.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-11",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        13.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-12",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        14.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-13",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        15.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-14",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        16.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  },
+  {
+    "trans": [
+      -129.8275,
+      260.5165,
+      309.3023
+    ],
+    "etype": "linear-plat",
+    "game_task": 0,
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "bsphere": [
+      -129.8275,
+      260.5165,
+      309.3023,
+      10
+    ],
+    "lump": {
+      "name": "linear-plat-15",
+      "path": [
+        "vector4m",
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ],
+        [
+          -315.0752,
+          261.5352,
+          257.2394,
+          1.0
+        ],
+        [
+          -302.4435,
+          261.7291,
+          208.424,
+          1.0
+        ],
+        [
+          -251.1681,
+          260.1402,
+          164.5585,
+          1.0
+        ],
+        [
+          -74.3468,
+          284.1222,
+          173.1768,
+          1.0
+        ],
+        [
+          -12.1781,
+          258.6332,
+          279.6234,
+          1.0
+        ],
+        [
+          -108.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -118.3376,
+          263.744,
+          315.6034,
+          1.0
+        ],
+        [
+          -129.8275,
+          260.5165,
+          309.3023,
+          1.0
+        ],
+        [
+          -186.1661,
+          287.3236,
+          305.0965,
+          1.0
+        ]
+      ],
+      "timings": [
+        "float",
+        17.0,
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "sync": [
+        "float",
+        14,
+        0.0
+      ]
+    }
+  }
+,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ {
+      "trans": [0.0, 50.0, 10.0],
+      "etype": "linear-plat",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [0.0, 50.0, 10.0, 10],
+      "lump": {
+        "name": "linear-plat-0",
+        "path": ["vector4m",
+          [0.0, 50.0, 10.0, 1.0],
+          [0.0, 50.0, 10.0, 1.0],
+          [0.0, 60.0, 10.0, 1.0],
+          [0.0, 50.0, 10.0, 1.0],
+          [0.0, 50.0, 10.0, 1.0],
+          [0.0, 60.0, 10.0, 1.0],
+          [0.0, 50.0, 10.0, 1.0]
+          ],
+        "timings": ["float",
+          0.0, // offset before starting
+          2.0, // down to up (out)
+          2.0, // up to down (out)
+          6.0, // stay down
+          2.0, // down to up (back)
+          2.0, // up to down (back)
+          0.0 // immediately start back up
+          ],
+        "sync": ["float", 14, 0.0]
+      }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////       CAISSE EXPLOSIF BOMB BOMBE !
+
+
+
+
+
+
+
+
+
+
+  {
+    "trans": [-194.3028, 409.6015, 175.2502],
+    "etype": "crate",
+    "game_task": 0,
+    "quat": [0, 0, 0, 1],
+    "bsphere": [-194.3028, 409.6015, 175.2502, 10],
+    "lump": {
+      "name": "MFL-crate-darkeco-01",
+      "crate-type": "'darkeco"
+    }
+  },
+  {
+    "trans": [-196.4690, 408.4365, 175.6536],
+    "etype": "crate",
+    "game_task": 0,
+    "quat": [0, 0, 0, 1],
+    "bsphere": [-196.4690, 408.4365, 175.6536, 10],
+    "lump": {
+      "name": "MFL-crate-darkeco-01",
+      "crate-type": "'darkeco"
+    }
+  },
+  {
+    "trans": [-198.6037, 408.0670, 175.5120],
+    "etype": "crate",
+    "game_task": 0,
+    "quat": [0, 0, 0, 1],
+    "bsphere": [-198.6037, 408.0670, 175.5120, 10],
+    "lump": {
+      "name": "MFL-crate-darkeco-01",
+      "crate-type": "'darkeco"
+    }
+  },
+  {
+    "trans": [-201.4558, 408.8669, 174.4040],
+    "etype": "crate",
+    "game_task": 0,
+    "quat": [0, 0, 0, 1],
+    "bsphere": [-201.4558, 408.8669, 174.4040, 10],
+    "lump": {
+      "name": "MFL-crate-darkeco-01",
+      "crate-type": "'darkeco"
+    }
+  },
+  {
+    "trans": [-202.3052, 410.6008, 175.1137],
+    "etype": "crate",
+    "game_task": 0,
+    "quat": [0, 0, 0, 1],
+    "bsphere": [-202.3052, 410.6008, 175.1137, 10],
+    "lump": {
+      "name": "MFL-crate-darkeco-01",
+      "crate-type": "'darkeco"
+    }
+  },
+  {
+    "trans": [-200.2483, 410.6008, 175.7261],
+    "etype": "crate",
+    "game_task": 0,
+    "quat": [0, 0, 0, 1],
+    "bsphere": [-200.2483, 410.6008, 175.7261, 10],
+    "lump": {
+      "name": "MFL-crate-darkeco-01",
+      "crate-type": "'darkeco"
+    }
+  },
+  {
+    "trans": [-198.6505, 411.1694, 175.8616],
+    "etype": "crate",
+    "game_task": 0,
+    "quat": [0, 0, 0, 1],
+    "bsphere": [-198.6505, 411.1694, 175.8616, 10],
+    "lump": {
+      "name": "MFL-crate-darkeco-01",
+      "crate-type": "'darkeco"
+    }
+  },
+  {
+    "trans": [-196.0911, 410.9313, 174.9761],
+    "etype": "crate",
+    "game_task": 0,
+    "quat": [0, 0, 0, 1],
+    "bsphere": [-196.0911, 410.9313, 174.9761, 10],
+    "lump": {
+      "name": "MFL-crate-darkeco-01",
+      "crate-type": "'darkeco"
+    }
+  },
+  {
+    "trans": [-197.2767, 412.3711, 175.2480],
+    "etype": "crate",
+    "game_task": 0,
+    "quat": [0, 0, 0, 1],
+    "bsphere": [-197.2767, 412.3711, 175.2480, 10],
+    "lump": {
+      "name": "MFL-crate-darkeco-01",
+      "crate-type": "'darkeco"
+    }
+  },
+  {
+    "trans": [-201.4584, 412.2111, 176.2942],
+    "etype": "crate",
+    "game_task": 0,
+    "quat": [0, 0, 0, 1],
+    "bsphere": [-201.4584, 412.2111, 176.2942, 10],
+    "lump": {
+      "name": "MFL-crate-darkeco-01",
+      "crate-type": "'darkeco"
+    }
+  }
+,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "trans": [0.0, 50.0, 31.0],
+      "etype": "linear-plat",
+      "game_task": 0,
+      "quat": [0, 0, 0, 1],
+      "bsphere": [0.0, 50.0, 31.0, 10],
+      "lump": {
+        "name": "linear-plat-3",
+        "path": ["vector4m",
+          [0.0, 50.0, 31.0, 1.0],
+          [0.0, 50.0, 31.0, 1.0],
+          [0.0, 60.0, 31.0, 1.0],
+          [0.0, 50.0, 31.0, 1.0],
+          [0.0, 50.0, 31.0, 1.0],
+          [0.0, 60.0, 31.0, 1.0],
+          [0.0, 50.0, 31.0, 1.0]
+        ],
+        "timings": ["float",
+          3.0, // offset before starting
+          2.0, // down to up (out)
+          2.0, // up to down (out)
+          0.0, // stay down
+          2.0, // down to up (back)
+          2.0, // up to down (back)
+          0.0 // immediately start back up
+          ],
+        "sync": ["float", 14, 0.0]
+      }
+    }
+
+  ]
+}

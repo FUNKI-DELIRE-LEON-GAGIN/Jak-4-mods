@@ -1,0 +1,1977 @@
+;;-*-Lisp-*-
+(in-package goal)
+
+;; name: mod-custom-code.gc
+;; name in dgo: mod-custom-code
+;; dgos: TODO
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; What is this file for.
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+#|
+ This file contains function defenitions that are pre placed in the mod base,
+    so if you place custom code inside of these functions, it will exectue based on
+    the name of the function, for example, if you place (set! (-> *game-info* fuel) (+ (-> *game-info* fuel) 1))
+    to the function named runs-on-orb-pickup, then jaks powercell count will increase each time you collect
+    an orb
+|#
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Begin function defintions.
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(defun draw-xyz ((jak target) (x float) (y float) (z float))
+  (set! (-> jak draw color-mult x) x)
+  (set! (-> jak draw color-mult y) y)
+  (set! (-> jak draw color-mult z) z))
+
+(defun draw-normal ((jak target))
+  (draw-xyz jak 1.0 1.0 1.0))
+
+(defun draw-white ((jak target))
+  (draw-xyz jak 10.0 10.0 10.0))
+
+(defun draw-black ((jak target))
+  (draw-xyz jak 0.0 0.0 0.0))
+
+(defun draw-red ((jak target))
+  (draw-xyz jak 3.0 0.0 0.0))
+
+(defun draw-green ((jak target))
+  (draw-xyz jak 0.0 3.0 0.0))
+
+(defun draw-my-blue ((jak target)) ;; Nouveau nom pour éviter le conflit
+  (draw-xyz jak 0.0 0.0 3.0))
+
+
+(defun draw-yellow ((jak target))
+  (draw-xyz jak 3.0 3.0 0.0))
+
+(defun draw-pink ((jak target))
+  (draw-xyz jak 3.0 0.0 3.0))
+
+(defun draw-light-blue ((jak target))
+  (draw-xyz jak 0.0 3.0 3.0))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;(when (cpad-pressed? 0 right)
+ ; (when *target*
+   ; (reset-actors 'play) ;; Réinitialise tous les acteurs (y compris Target)
+  ;  (start 'play (get-or-create-continue! *game-info*)) ;; Redémarre Target
+  ;))
+
+
+
+
+
+
+
+
+(define music-playing? #f)
+
+
+
+
+
+
+
+
+
+
+;;(set! ocean-near-block #f) ;; Essaie de désactiver la fonction responsable du rendu. DESACTIVER UNE FONCTION
+
+
+
+
+(defun runs-every-frame ()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  (cond
+    ((or (= (-> *level* level0 name) 'l1) (= (-> *level* level1 name) 'l1))
+      (when (not music-playing?)
+        ;; Assure que la musique est lue uniquement si elle n'est pas déjà en cours.
+        (play-main-music "haven city remix jak 4.wav" (the int (* (-> *setting-control* default music-volume) 0.6)))
+        (set! music-playing? #t)))
+    (else
+      ;; Lorsque tu quittes un niveau, arrête la musique et mets à jour l'état.
+      (play-main-music "" (the int (-> *setting-control* default music-volume)))
+                                             
+                               
+                               
+      (set! music-playing? #f)))
+  (none)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;;;; --------------------------------------------------------------------------------------------------------------
+;;;; POUVOIRE L2
+;;;; --------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+(when (and (cpad-hold? 0 l2) (cpad-pressed? 0 up)  
+
+
+(when *target*
+
+(start 'debug (get-or-create-continue! *game-info*)) ;; Redémarre Target
+    (start 'play (get-or-create-continue! *game-info*)) ;; Redémarre Target
+
+    (play-sound-file "REGEN.mp3" 30)
+(reset-actors 'play)
+
+
+  )))
+
+    
+
+
+
+
+
+
+
+
+
+
+(when (and (cpad-hold? 0 l2) (cpad-pressed? 0 down))
+ 
+
+(play-sound-file "SUPER NOVA.mp3" 50)
+
+    (set-blackout-frames (seconds 0.135))
+
+  (when *target*
+    (reset-actors 'play)
+    (set! *spawn-actors* #f)
+
+(if (rand-vu-percent? 0.5)  
+    (set! (-> *time-of-day-proc* 0 hour) 7)  ; Si la condition est vraie, l'heure est définie à 7
+    (if (rand-vu-percent? 0.5)  
+        (set! (-> *time-of-day-proc* 0 hour) 18)  ; Si la condition est fausse mais avec une autre probabilité, l'heure est définie à 18
+        (set! (-> *time-of-day-proc* 0 hour) 23))) ; Si aucune des conditions précédentes, l'heure est définie à 23
+
+
+
+
+
+
+
+
+
+
+
+
+))
+
+
+
+
+
+
+
+
+
+
+(when (and (cpad-hold? 0 l2) (cpad-pressed? 0 left)
+
+
+(play-sound-file "STOP TIME.mp3" 50)
+
+(set-setting! 'process-mask 'set 0.0 (process-mask enemy platform projectile death actor-pause   sleep sleep-code collectable attackable ambient heap-shrunk )) ;crate
+(draw-my-blue *target*)
+
+
+
+ (set! *pause-lock* #f)
+
+
+
+
+
+
+
+
+
+))
+
+
+
+
+
+
+
+(when (and (cpad-hold? 0 l2) (cpad-pressed? 0 right)
+
+
+(set! *spawn-actors* #t)
+
+
+(set! (-> *time-of-day-proc* 0 hour) 12)
+
+
+  (play-sound-file "TIME BACK.mp3" 40)  
+    (draw-normal *target*) ;; ✅ Jak redevient normal quand le jeu reprend
+
+
+(set-setting! 'process-mask 'clear 0.0 (process-mask enemy platform projectile death))
+
+
+
+(define *CAMERA-bank*
+  (new 'static
+       'camera-bank
+       :collide-move-rad 1638.4
+       :min-detectable-velocity 40.96
+       :attack-timeout (seconds 0.25)
+       :default-string-max-y (meters 3)
+       :default-string-min-y (meters 1)
+       :default-string-max-z (meters 12.5)
+       :default-string-min-z (meters 5)
+       :default-string-push-z (meters 10)
+       :default-tilt-adjust (degrees -6.5000005)))
+
+
+
+
+
+  ))
+
+
+
+
+;;;; --------------------------------------------------------------------------------------------------------------
+;;;; R1 POWER SPECIALE
+;;;; --------------------------------------------------------------------------------------------------------------
+
+
+
+(when (and (cpad-hold? 0 r1) (cpad-pressed? 0 down)  
+
+
+
+(when *target*
+
+
+
+
+
+
+
+(defaultWeatherTime)    ;; Redémarre Target ACTIVE NEIGE
+
+(play-sound-file "TIME BACK.mp3" 30))))
+
+
+
+
+
+
+
+
+
+
+
+
+(when (and (cpad-hold? 0 r1) (cpad-pressed? 0 left)  
+
+
+
+
+
+
+
+(when *target*
+
+
+
+(spawn-actor-by-name "fuel")
+
+
+
+    (play-sound-file "TIME BACK.mp3" 30))))
+
+
+
+
+
+
+
+
+
+
+
+
+;;;; --------------------------------------------------------------------------------------------------------------
+;;;; SELECTE RESPAWN
+;;;; --------------------------------------------------------------------------------------------------------------
+
+
+
+
+(when (and (cpad-hold? 0 select) (cpad-pressed? 0 down))
+  (when *target*
+    ;; Désactiver la pause
+    (when (paused?)
+      (set-master-mode 'game)  ;; Remet le jeu en mode normal
+      (logclear! (-> *setting-control* default process-mask) (process-mask pause menu))
+      (set! *pause-lock* #f)
+      (sound-group-continue (sound-group sfx music dialog sog3 ambient sog5 sog6 sog7))
+      (hide-progress-screen))
+
+    ;; Actions principales
+    (start 'play (get-or-create-continue! *game-info*))
+    (play-sound-file "REGEN.mp3" 30)
+    (reset-actors 'play)
+    (disable-snow)))  ;; Désactive la neige
+
+(when (and (cpad-hold? 0 select) (cpad-pressed? 0 up))
+  (when *target*
+    ;; Désactiver la pause
+    (when (paused?)
+      (set-master-mode 'game)
+      (logclear! (-> *setting-control* default process-mask) (process-mask pause menu))
+      (set! *pause-lock* #f)
+      (sound-group-continue (sound-group sfx music dialog sog3 ambient sog5 sog6 sog7))
+      (hide-progress-screen))
+
+    ;; Actions principales
+    (start 'play (get-or-create-continue! *game-info*))
+    (play-sound-file "REGEN.mp3" 30)
+    (reset-actors 'play)))
+
+(when (and (cpad-hold? 0 select) (cpad-pressed? 0 left))
+  (when *target*
+    ;; Désactiver la pause
+    (when (paused?)
+      (set-master-mode 'game)
+      (logclear! (-> *setting-control* default process-mask) (process-mask pause menu))
+      (set! *pause-lock* #f)
+      (sound-group-continue (sound-group sfx music dialog sog3 ambient sog5 sog6 sog7))
+      (hide-progress-screen))
+
+    ;; Actions principales
+    (start 'play (get-or-create-continue! *game-info*))
+    (play-sound-file "REGEN.mp3" 30)
+    (reset-actors 'play)))
+
+(when (and (cpad-hold? 0 select) (cpad-pressed? 0 right))
+  (when *target*
+    ;; Désactiver la pause
+    (when (paused?)
+      (set-master-mode 'game)
+      (logclear! (-> *setting-control* default process-mask) (process-mask pause menu))
+      (set! *pause-lock* #f)
+      (sound-group-continue (sound-group sfx music dialog sog3 ambient sog5 sog6 sog7))
+      (hide-progress-screen))
+
+    ;; Actions principales
+    (start 'play (get-or-create-continue! *game-info*))
+    (play-sound-file "REGEN.mp3" 30)
+    (reset-actors 'play)))
+
+
+
+
+
+;;;; --------------------------------------------------------------------------------------------------------------
+;;;; TRIANGLE LA MONTURE FLUT FLUT ZOMMER
+;;;; --------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+(when (and (cpad-hold? 0 triangle) (cpad-pressed? 0 up)  
+
+
+
+  (send-event *target* 'change-mode 'flut #f)
+
+
+  ))
+
+
+
+
+
+
+(when (and (cpad-hold? 0 triangle) (cpad-pressed? 0 right)  
+
+
+
+(reset-actors 'play)
+
+
+
+  ))
+
+
+
+
+
+(when (and (cpad-hold? 0 triangle) (cpad-pressed? 0 left)  
+
+
+
+  (send-event *target* 'change-mode 'racing #f)
+
+
+  ))
+
+
+
+
+
+
+(when (and (cpad-hold? 0 triangle) (cpad-pressed? 0 down)  
+
+
+
+(send-event *target* 'end-mode)
+
+
+
+
+
+
+
+
+  ))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;;;; --------------------------------------------------------------------------------------------------------------
+;;;; ECO POUVOIR SPAWN ! R2
+;;;; --------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+(when (and (cpad-hold? 0 r2) (cpad-pressed? 0 down))
+
+
+  (birth-pickup-at-point 
+    (vector+float! (new-stack-vector0) (-> *target* root trans) 0.0)
+    (pickup-type eco-yellow)
+    1.0
+    #f
+    *target*
+    (the-as fact-info #f)
+
+
+  )
+)
+
+
+
+
+
+(when (and (cpad-hold? 0 r2) (cpad-pressed? 0 left))
+
+
+  (birth-pickup-at-point 
+    (vector+float! (new-stack-vector0) (-> *target* root trans) 0.0)
+    (pickup-type eco-blue)
+    1.0
+    #f
+    *target*
+    (the-as fact-info #f)
+
+    
+  )
+)
+
+
+
+
+
+
+
+
+(when (and (cpad-hold? 0 r2) (cpad-pressed? 0 up))
+
+
+  (birth-pickup-at-point 
+    (vector+float! (new-stack-vector0) (-> *target* root trans) 0.0)
+    (pickup-type eco-red)
+    1.0
+    #f
+    *target*
+    (the-as fact-info #f)
+
+    
+  )
+)
+
+
+
+
+
+(when (and (cpad-hold? 0 r2) (cpad-pressed? 0 right))
+
+
+  (birth-pickup-at-point 
+    (vector+float! (new-stack-vector0) (-> *target* root trans) 0.0)
+    (pickup-type eco-green)
+    1.0
+    #f
+    *target*
+    (the-as fact-info #f)
+
+    
+  )
+)
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;;;; --------------------------------------------------------------------------------------------------------------
+;;;; LA GRAVITER L1
+;;;; --------------------------------------------------------------------------------------------------------------
+
+
+
+
+(when (and (cpad-hold? 0 l1) (cpad-pressed? 0 up)  
+
+
+
+
+(define *standard-dynamics*
+  (new 'static
+       'dynamics
+       :name 'standard
+       :gravity-max
+       GRAVITY_MAX
+       :gravity-length
+       GRAVITY_AMOUNT
+       :gravity
+       (new 'static 'vector :x 0.0 :y GRAVITY_AMOUNT :z 0.0 :w 1.0)
+       :gravity-normal
+       (new 'static 'vector :x -0.1 :y -1.0 :z -0.1 :w 1.0)
+       :walk-distance (meters 2)
+       :run-distance (meters 5)))
+
+
+
+(when *target*
+
+(start 'debug (get-or-create-continue! *game-info*)) ;; Redémarre Target
+    (start 'play (get-or-create-continue! *game-info*)) ;; Redémarre Target
+    (play-sound-file "REGEN.mp3" 5)
+
+
+
+
+
+
+
+
+(define *CAMERA_MASTER-bank*
+  (new 'static
+       'camera-master-bank
+       :onscreen-head-height (meters 24.65)
+       :onscreen-foot-height (meters -10.5)
+       :target-height (meters -32.15)
+       :up-move-to-pitch-ratio-in-air -1.0
+       :down-move-to-pitch-ratio-in-air -0.5
+       :up-move-to-pitch-on-ground -0.9
+       :down-move-to-pitch-on-ground -0.9
+       :pitch-off-blend -0.5))
+
+
+
+  )))
+
+
+
+
+
+
+
+(when (and (cpad-hold? 0 l1) (cpad-pressed? 0 right)  
+
+
+
+(define *standard-dynamics*
+  (new 'static
+       'dynamics
+       :name 'standard
+       :gravity-max
+       GRAVITY_MAX
+       :gravity-length
+       GRAVITY_AMOUNT
+       :gravity
+       (new 'static 'vector :x 0.0 :y GRAVITY_AMOUNT :z 0.0 :w 1.0)
+       :gravity-normal
+       (new 'static 'vector :x 0.0 :y 0.0 :z -1.0 :w 1.0)
+       :walk-distance (meters 2)
+       :run-distance (meters 5)))
+
+
+(when *target*
+
+(start 'debug (get-or-create-continue! *game-info*)) ;; Redémarre Target
+    (start 'play (get-or-create-continue! *game-info*)) ;; Redémarre Target
+    (play-sound-file "REGEN.mp3" 5)
+
+
+
+  )))
+
+
+
+
+
+
+
+
+(when (and (cpad-hold? 0 l1) (cpad-pressed? 0 left)  
+
+
+
+(define *standard-dynamics*
+  (new 'static
+       'dynamics
+       :name 'standard
+       :gravity-max
+       GRAVITY_MAX
+       :gravity-length
+       GRAVITY_AMOUNT
+       :gravity
+       (new 'static 'vector :x 0.0 :y GRAVITY_AMOUNT :z 0.0 :w 1.0)
+       :gravity-normal
+       (new 'static 'vector :x 0.0 :y 0.0 :z 1.0 :w 1.0)
+       :walk-distance (meters 2)
+       :run-distance (meters 5)))
+
+
+(when *target*
+
+(start 'debug (get-or-create-continue! *game-info*)) ;; Redémarre Target
+    (start 'play (get-or-create-continue! *game-info*)) ;; Redémarre Target
+    (play-sound-file "REGEN.mp3" 5)
+
+
+
+  )))
+
+
+
+
+
+
+
+(when (and (cpad-hold? 0 l1) (cpad-pressed? 0 down)  
+
+
+
+(define *standard-dynamics*
+  (new 'static
+       'dynamics
+       :name 'standard
+       :gravity-max
+       GRAVITY_MAX
+       :gravity-length
+       GRAVITY_AMOUNT
+       :gravity
+       (new 'static 'vector :x 0.0 :y GRAVITY_AMOUNT :z 0.0 :w 1.0)
+       :gravity-normal
+       (new 'static 'vector :x 0.0 :y 1.0 :z 0.0 :w 1.0)
+       :walk-distance (meters 2)
+       :run-distance (meters 5)))
+
+
+(when *target*
+
+(start 'debug (get-or-create-continue! *game-info*)) ;; Redémarre Target
+    (start 'play (get-or-create-continue! *game-info*)) ;; Redémarre Target
+    (play-sound-file "REGEN.mp3" 5)
+
+
+
+
+
+
+(define *CAMERA_MASTER-bank*
+  (new 'static
+       'camera-master-bank
+       :onscreen-head-height (meters 2.65)
+       :onscreen-foot-height (meters 0.5)
+       :target-height (meters 2.15)
+       :up-move-to-pitch-ratio-in-air 1.0
+       :down-move-to-pitch-ratio-in-air 0.5
+       :up-move-to-pitch-on-ground 0.9
+       :down-move-to-pitch-on-ground 0.9
+       :pitch-off-blend 0.5))
+
+
+
+  )))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    (set! *time-of-day-fast* #t)
+
+
+
+
+
+(set! *time-of-day-effects* #f)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(cond
+  ((= (-> *target* fact eco-level) 0)
+
+
+
+
+
+
+
+(when *target*
+  (logand! (-> *target* state-flags) (lognot (state-flags invulnerable))))
+
+
+
+
+
+
+
+
+(defun set-jak-normale ()
+  "Agrandit Jak à 4.0."
+  (let ((target-root (-> (the-as target *target*) root)))
+    (set! (-> target-root scale x) 1.0)
+    (set! (-> target-root scale y) 1.0)
+    (set! (-> target-root scale z) 1.0)))
+(set-jak-normale)
+
+
+
+
+
+
+
+
+
+      
+   (set! *walk-mods*
+     (new 'static
+          'surface
+          :name 'run
+          :turnv 131072.0
+          :turnvv 524288.0
+          :tiltv 65536.0
+          :tiltvv 131072.0
+          :transv-max 40960.0
+          :target-speed 40960.0
+          :seek0 1.0
+          :seek90 1.0
+          :seek180 1.0
+          :fric 1.0
+          :nonlin-fric-dist 1.0
+          :slip-factor 1.0
+          :slide-factor 1.0
+          :slope-up-factor 1.0
+          :slope-down-factor 1.0
+          :slope-slip-angle 1.0
+          :impact-fric 1.0
+          :bend-factor 1.0
+          :bend-speed 1.0
+          :alignv 1.0
+          :slope-up-traction 1.0
+          :align-speed 1.0
+          :flags (surface-flags allow-look-around)))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(cond
+  ((= (-> *target* fact eco-level) 0)
+
+
+
+
+
+
+   (set! *jump-mods*
+     (new 'static
+          'surface
+          :name 'jump
+          :turnv 131072.0
+          :turnvv 18204.445
+          :tiltv 32768.0
+          :tiltvv 131072.0
+          :transv-max 40960.0
+          :target-speed 40960.0
+          :seek0 0.3
+          :seek90 0.3
+          :seek180 0.3
+          :fric 0.2
+          :nonlin-fric-dist 1.0
+          :slip-factor 1.0
+          :slide-factor 1.0
+          :slope-up-factor 1.0
+          :slope-down-factor 1.0
+          :slope-slip-angle 1.0
+          :impact-fric 1.0
+          :bend-factor 1.0
+          :bend-speed 1.0
+          :alignv 1.0
+          :slope-up-traction 1.0
+          :align-speed 1.0
+          :mode 'run
+          :flags (surface-flags allow-edge-grab)))))
+
+
+
+
+
+(cond
+  ((= (-> *target* fact eco-level) 0)
+   (set! *double-jump-mods*
+     (new 'static
+          'surface
+          :name 'jump-double
+          :turnv 131072.0
+          :turnvv 18204.445
+          :tiltv 32768.0
+          :tiltvv 131072.0
+          :transv-max 32768.0
+          :target-speed 32768.0
+          :seek0 0.3
+          :seek90 0.3
+          :seek180 0.3
+          :fric 0.2
+          :nonlin-fric-dist 1.0
+          :slip-factor 1.0
+          :slide-factor 1.0
+          :slope-up-factor 1.0
+          :slope-down-factor 1.0
+          :slope-slip-angle 1.0
+          :impact-fric 1.0
+          :bend-factor 1.0
+          :bend-speed 1.0
+          :alignv 1.0
+          :slope-up-traction 1.0
+          :align-speed 1.0
+          :mode 'run
+          :flags (surface-flags allow-edge-grab)))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(cond
+  ((= (-> *target* fact eco-level) 0)
+   (set! *attack-mods*
+
+
+
+     (new 'static
+          'surface
+          :name 'attack
+          :tiltv 65536.0
+          :tiltvv 131072.0
+          :transv-max 40960.0
+          :target-speed 40960.0
+          :seek0 1.0
+          :seek90 1.0
+          :seek180 1.0
+          :fric 1.0
+          :nonlin-fric-dist 1.0
+          :slip-factor 1.0
+          :slide-factor 1.0
+          :slope-up-factor 1.0
+          :slope-down-factor 1.0
+          :slope-slip-angle 1.0
+          :impact-fric 1.0
+          :bend-factor 1.0
+          :bend-speed 1.0
+          :alignv 1.0
+          :slope-up-traction 1.0
+          :align-speed 1.0
+          :mode 'attack
+          :flags (surface-flags attacking))))
+
+  )
+
+
+
+
+
+(cond
+  ((= (-> *target* fact eco-level) 0)
+   (set! *TARGET-bank*
+     (new 'static 'target-bank
+       :jump-collide-offset (meters 0.7)
+       :jump-height-min (meters 1.01)
+       :jump-height-max (meters 3.5)
+       :double-jump-height-min (meters 1)
+       :double-jump-height-max (meters 2.5)
+       :flip-jump-height-min (meters 5)
+       :flip-jump-height-max (meters 7)
+       :duck-jump-height-min (meters 5)
+       :duck-jump-height-max (meters 7)
+       :flop-jump-height-min (meters 5)
+       :flop-jump-height-max (meters 7)
+       :attack-jump-height-min (meters 4)
+       :attack-jump-height-max (meters 5.5)
+       :edge-grab-jump-height-min (meters 1.7)
+       :edge-grab-jump-height-max (meters 1.7)
+       :swim-jump-height-min (meters 5)
+       :swim-jump-height-max (meters 5)
+       :tube-jump-height-min (meters 1.75)
+       :tube-jump-height-max (meters 2.5)
+       :wheel-duration (seconds 0.5)
+       :wheel-jump-pre-window (seconds 1)
+       :wheel-jump-post-window (seconds 0.1)
+       :wheel-speed-min (meters 11.5)
+       :wheel-speed-inc (meters 1.5)
+       :wheel-flip-duration (seconds 0.7)
+       :wheel-flip-height (meters 3.52)
+       :wheel-flip-dist (meters 17.3)
+       :wheel-flip-art-height (meters 3.2969)
+       :wheel-flip-art-dist (meters 12.5)
+       :duck-slide-distance (meters 5.75)
+       :fall-far (meters 30)
+       :fall-far-inc (meters 20)
+       :attack-timeout (seconds 0.3)
+       :ground-timeout (seconds 0.2)
+       :slide-down-timeout (seconds 0.2)
+       :fall-timeout (seconds 1)
+       :fall-stumble-threshold (meters 39.9)
+       :yellow-projectile-speed (meters 160)
+       :hit-invulnerable-timeout (seconds 3)
+       :run-cycle-length 60.0
+       :walk-cycle-dist (meters 2.8)
+       :walk-up-cycle-dist (meters 2.8)
+       :walk-down-cycle-dist (meters 2.8)
+       :walk-side-cycle-dist (meters 2.8)
+       :run-cycle-dist (meters 6.25)
+       :run-up-cycle-dist (meters 5)
+       :run-down-cycle-dist (meters 5)
+       :run-side-cycle-dist (meters 6.25)
+       :run-wall-cycle-dist (meters 2.8)
+       :duck-walk-cycle-dist (meters 3.25)
+       :wade-shallow-walk-cycle-dist (meters 6)
+       :wade-deep-walk-cycle-dist (meters 6)
+       :smack-surface-dist (meters 1.25)
+       :min-dive-depth (meters 2)
+       :root-radius (meters 2.2)
+       :root-offset
+       (new 'static 'vector :y 4915.2 :w 1.0)
+       :body-radius (meters 0.7)
+       :edge-radius (meters 0.35)
+       :edge-offset
+       (new 'static 'vector :y 4915.2 :z 4096.0 :w 1.0)
+       :head-radius (meters 0.7)
+       :head-height (meters 1.4)
+       :head-offset
+       (new 'static 'vector :y 4915.2 :w 1.0)
+       :spin-radius (meters 2.2)
+       :spin-offset
+       (new 'static 'vector :y 6553.6 :w 1.0)
+       :duck-spin-radius (meters 1.2)
+       :duck-spin-offset
+       (new 'static 'vector :y 4096.0 :w 1.0)
+       :punch-radius (meters 1.3)
+       :punch-offset
+       (new 'static 'vector :y 5324.8 :w 1.0)
+       :uppercut-radius (meters 1)
+       :uppercut0-offset
+       (new 'static 'vector :y 3276.8 :w 1.0)
+       :uppercut1-offset
+       (new 'static 'vector :y 9011.2 :w 1.0)
+       :flop-radius (meters 1.4)
+       :flop0-offset
+       (new 'static 'vector :y 3276.8 :w 1.0)
+       :flop1-offset
+       (new 'static 'vector :y 9011.2 :w 1.0)
+       :stuck-time (seconds 0.3)
+       :stuck-timeout (seconds 2)
+       :stuck-distance (meters 0.05)
+       :tongue-pull-speed-min 0.15
+       :tongue-pull-speed-max 0.22
+ :yellow-attack-timeout (seconds 0.002)
+     )
+   )
+  )
+)
+
+
+
+
+
+
+
+
+
+
+  
+  ;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in mod-common-functions.gc
+  (if *show-input-display* (input-display-on) (input-display-off))
+  ;; ensure orb-placer is spawned/killed as requested, debug menu is updated
+  (when *debug-segment*
+    (orb-placer-maintenance))
+  (none))
+
+
+
+(defun runs-on-orb-pickup ((parent process-tree))
+  (let* ((from-cache? (and parent (type-type? (-> parent type) orb-cache-top))))
+   
+
+(set! (-> *game-info* buzzer-total) (+ (-> *game-info* buzzer-total) 1))
+
+
+
+    ;; Code here runs on ANY orb pickup
+    (when from-cache?
+      ;; Code here runs only if the orb was from an orb cache
+      )
+    (when (not from-cache?)
+      ;; Code here runs only if the orb was NOT from an orb cache
+      ))
+  (none))
+
+(defun runs-on-fly-pickup ()
+  ;; Code here runs on any scout fly pickup
+  (none))
+
+(defun runs-on-cell-pickup ((cell-event symbol))
+  (case cell-event
+    (('pickup)
+     ;; Code here runs as soon as you pickup a powercell
+     )
+    (('cutscene-end)
+     ;; Code here runs at the end of any powercell cutscene
+     ))
+  (none))
+
+(defun runs-on-eco-pickup ((eco-type pickup-type) (parent process-tree))
+  (let* ((from-vent? (and parent (type-type? (-> parent type) vent))))
+    ;; Code here runs as soon as you pickup ANY eco
+    (case eco-type
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      (((pickup-type eco-yellow))
+
+
+ 
+
+
+
+
+
+
+
+        (define *TARGET-bank*
+  (new 'static
+       'target-bank
+       :jump-collide-offset (meters 0.7)
+       :jump-height-min (meters 4.01)
+       :jump-height-max (meters 6.5)
+       :double-jump-height-min (meters 33)
+       :double-jump-height-max (meters 34.5)
+       :flip-jump-height-min (meters 995)
+       :flip-jump-height-max (meters 917)
+       :duck-jump-height-min (meters 95)
+       :duck-jump-height-max (meters 97)
+       :flop-jump-height-min (meters 95)
+       :flop-jump-height-max (meters 917)
+       :attack-jump-height-min (meters 4)
+       :attack-jump-height-max (meters 15.5)
+       :edge-grab-jump-height-min (meters 1.7)
+       :edge-grab-jump-height-max (meters 1.7)
+       :swim-jump-height-min (meters 5)
+       :swim-jump-height-max (meters 5)
+       :tube-jump-height-min (meters 1.75)
+       :tube-jump-height-max (meters 2.5)
+       :wheel-duration (seconds 10.5)
+       :wheel-jump-pre-window (seconds 11)
+       :wheel-jump-post-window (seconds 10.1)
+       :wheel-speed-min (meters 11.5)
+       :wheel-speed-inc (meters 1.5)
+       :wheel-flip-duration (seconds 0.7)
+       :wheel-flip-height (meters 23.52)
+       :wheel-flip-dist (meters 17.3)
+       :wheel-flip-art-height (meters 5.2969)
+       :wheel-flip-art-dist (meters 12.5)
+       :duck-slide-distance (meters 5.75)
+       :fall-far (meters 30)
+       :fall-far-inc (meters 20)
+       :attack-timeout (seconds 0.0)
+       :ground-timeout (seconds 0.2)
+       :slide-down-timeout (seconds 0.2)
+       :fall-timeout (seconds 1)
+       :fall-stumble-threshold (meters 39.9)
+       :yellow-projectile-speed (meters 160)
+       :hit-invulnerable-timeout (seconds 8)
+       :run-cycle-length 60.0
+       :walk-cycle-dist (meters 2.8)
+       :walk-up-cycle-dist (meters 2.8)
+       :walk-down-cycle-dist (meters 2.8)
+       :walk-side-cycle-dist (meters 2.8)
+       :run-cycle-dist (meters 6.25)
+       :run-up-cycle-dist (meters 5)
+       :run-down-cycle-dist (meters 5)
+       :run-side-cycle-dist (meters 6.25)
+       :run-wall-cycle-dist (meters 2.8)
+       :duck-walk-cycle-dist (meters 3.25)
+       :wade-shallow-walk-cycle-dist (meters 6)
+       :wade-deep-walk-cycle-dist (meters 6)
+       :smack-surface-dist (meters 1.25)
+       :min-dive-depth (meters 2)
+       :root-radius (meters 2.2)
+       :root-offset
+       (new 'static 'vector :y 4915.2 :w 1.0)
+       :body-radius (meters 0.7)
+       :edge-radius (meters 0.35)
+       :edge-offset
+       (new 'static 'vector :y 4915.2 :z 4096.0 :w 1.0)
+       :head-radius (meters 0.7)
+       :head-height (meters 1.4)
+       :head-offset
+       (new 'static 'vector :y 4915.2 :w 1.0)
+       :spin-radius (meters 2.2)
+       :spin-offset
+       (new 'static 'vector :y 6553.6 :w 1.0)
+       :duck-spin-radius (meters 1.2)
+       :duck-spin-offset
+       (new 'static 'vector :y 4096.0 :w 1.0)
+       :punch-radius (meters 1.3)
+       :punch-offset
+       (new 'static 'vector :y 5324.8 :w 1.0)
+       :uppercut-radius (meters 1)
+       :uppercut0-offset
+       (new 'static 'vector :y 3276.8 :w 1.0)
+       :uppercut1-offset
+       (new 'static 'vector :y 9011.2 :w 1.0)
+       :flop-radius (meters 1.4)
+       :flop0-offset
+       (new 'static 'vector :y 3276.8 :w 1.0)
+       :flop1-offset
+       (new 'static 'vector :y 9011.2 :w 1.0)
+       :stuck-time (seconds 0.3)
+       :stuck-timeout (seconds 2)
+       :stuck-distance (meters 0.05)
+       :tongue-pull-speed-min 0.15
+       :tongue-pull-speed-max 0.22
+       :yellow-attack-timeout (seconds 0.0)))
+
+
+   (set! *jump-mods*
+     (new 'static
+          'surface
+          :name 'jump
+       :turnv 131072.0
+       :turnvv 524288.0
+       :tiltv 65536.0
+       :tiltvv 131072.0
+       :transv-max 140960.0
+       :target-speed 140960.0
+       :seek0 111.0
+       :seek90 111.0
+       :seek180 111.0
+       :fric 1.0
+       :nonlin-fric-dist 1.0
+       :slip-factor 0.0
+       :slide-factor 0.0
+       :slope-up-factor 0.0
+       :slope-down-factor 0.0
+       :slope-slip-angle 30.0
+       :impact-fric 1.0
+       :bend-factor 1.0
+       :bend-speed 1.0
+       :alignv 1.0
+          :slope-up-traction 1.0
+          :align-speed 1.0
+          :mode 'run
+          :flags (surface-flags allow-edge-grab allow-look-around)))
+
+
+
+
+
+
+(define *double-jump-mods*
+  (new 'static
+       'surface
+       :name 'jump-double
+       :turnv 131072.0
+       :turnvv 524288.0
+       :tiltv 65536.0
+       :tiltvv 131072.0
+       :transv-max 140960.0
+       :target-speed 140960.0
+       :seek0 111.0
+       :seek90 111.0
+       :seek180 111.0
+       :fric 1.0
+       :nonlin-fric-dist 1.0
+       :slip-factor 0.0
+       :slide-factor 0.0
+       :slope-up-factor 0.0
+       :slope-down-factor 0.0
+       :slope-slip-angle 30.0
+       :impact-fric 1.0
+       :bend-factor 1.0
+       :bend-speed 1.0
+       :alignv 1.0
+       :slope-up-traction 1.0
+       :align-speed 1.0
+       :mode 'run
+       :flags (surface-flags allow-edge-grab allow-look-around)))
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      (((pickup-type eco-red))
+
+
+
+
+(defun set-jak-big ()
+  "Rend Jak plus grand."
+  (let ((target-root (-> (the-as target *target*) root)))
+    (set! (-> target-root scale x) 2.0)
+    (set! (-> target-root scale y) 2.0)
+    (set! (-> target-root scale z) 2.0)))
+(set-jak-big)
+
+
+ (when *target*
+  (logior! (-> *target* state-flags) (state-flags invulnerable)))
+
+
+
+
+(define *attack-mods*
+  (new 'static
+       'surface
+       :name 'attack
+       :tiltv 65536.0
+       :tiltvv 131072.0
+          :transv-max 140960.0
+          :target-speed 140960.0
+       :seek0 111.0
+       :seek90 111.0
+       :seek180 111.0
+       :fric 1.0
+       :nonlin-fric-dist 1.0
+       :slip-factor 0.0
+       :slide-factor 0.0
+       :slope-up-factor 0.0
+       :slope-down-factor 0.0
+       :slope-slip-angle 30.0
+       :impact-fric 1.0
+       :bend-factor 1.0
+       :bend-speed 1.0
+       :alignv 1.0
+       :slope-up-traction 1.0
+       :align-speed 1.0
+       :mode 'attack
+       :flags (surface-flags attacking)))
+
+
+
+
+(define *walk-mods*
+  (new 'static
+       'surface
+       :name 'run
+       :turnv 131072.0
+       :turnvv 524288.0
+       :tiltv 65536.0
+       :tiltvv 131072.0
+       :transv-max 70960.0
+       :target-speed 70960.0
+       :seek0 111.0
+       :seek90 111.0
+       :seek180 111.0
+       :fric 1.0
+       :nonlin-fric-dist 1.0
+       :slip-factor 0.0
+       :slide-factor 0.0
+       :slope-up-factor 0.0
+       :slope-down-factor 0.0
+       :slope-slip-angle 30.0
+       :impact-fric 1.0
+       :bend-factor 1.0
+       :bend-speed 1.0
+       :alignv 1.0
+       :slope-up-traction 1.0
+       :align-speed 1.0
+       :flags (surface-flags allow-look-around)))
+
+
+
+
+
+
+(define *jump-mods*
+  (new 'static
+       'surface
+       :name 'jump
+       :turnv 131072.0
+       :turnvv 524288.0
+       :tiltv 65536.0
+       :tiltvv 131072.0
+       :transv-max 80960.0
+       :target-speed 80960.0
+       :seek0 111.0
+       :seek90 111.0
+       :seek180 111.0
+       :fric 1.0
+       :nonlin-fric-dist 1.0
+       :slip-factor 0.0
+       :slide-factor 0.0
+       :slope-up-factor 0.0
+       :slope-down-factor 0.0
+       :slope-slip-angle 30.0
+       :impact-fric 1.0
+       :bend-factor 1.0
+       :bend-speed 1.0
+       :alignv 1.0
+       :slope-up-traction 1.0
+       :align-speed 1.0
+       :mode 'run
+       :flags (surface-flags allow-edge-grab)))
+
+(define *double-jump-mods*
+  (new 'static
+       'surface
+       :name 'jump-double
+       :turnv 131072.0
+       :turnvv 524288.0
+       :tiltv 65536.0
+       :tiltvv 131072.0
+       :transv-max 80960.0
+       :target-speed 80960.0
+       :seek0 111.0
+       :seek90 111.0
+       :seek180 111.0
+       :fric 1.0
+       :nonlin-fric-dist 1.0
+       :slip-factor 0.0
+       :slide-factor 0.0
+       :slope-up-factor 0.0
+       :slope-down-factor 0.0
+       :slope-slip-angle 30.0
+       :impact-fric 1.0
+       :bend-factor 1.0
+       :bend-speed 1.0
+       :alignv 1.0
+       :slope-up-traction 1.0
+       :align-speed 1.0
+       :mode 'run
+       :flags (surface-flags allow-edge-grab)))
+
+
+
+
+
+
+
+(define *TARGET-bank*
+  (new 'static
+       'target-bank
+       :jump-collide-offset (meters 0.7)
+       :jump-height-min (meters 3.01)
+       :jump-height-max (meters 6.5)
+       :double-jump-height-min (meters 3)
+       :double-jump-height-max (meters 4.5)
+       :flip-jump-height-min (meters 10)
+:flip-jump-height-max (meters 14)
+:duck-jump-height-min (meters 10)
+:duck-jump-height-max (meters 14)
+:flop-jump-height-min (meters 10)
+:flop-jump-height-max (meters 14)
+:attack-jump-height-min (meters 8)
+:attack-jump-height-max (meters 11)
+:edge-grab-jump-height-min (meters 3.4)
+:edge-grab-jump-height-max (meters 3.4)
+:swim-jump-height-min (meters 10)
+:swim-jump-height-max (meters 10)
+:tube-jump-height-min (meters 3.5)
+:tube-jump-height-max (meters 5)
+:wheel-duration (seconds 1.0)
+:wheel-jump-pre-window (seconds 2)
+:wheel-jump-post-window (seconds 0.2)
+:wheel-speed-min (meters 23)
+:wheel-speed-inc (meters 3.0)
+:wheel-flip-duration (seconds 1.4)
+:wheel-flip-height (meters 7.04)
+:wheel-flip-dist (meters 34.6)
+:wheel-flip-art-height (meters 6.5938)
+:wheel-flip-art-dist (meters 25)
+:duck-slide-distance (meters 11.5)
+:fall-far (meters 60)
+:fall-far-inc (meters 40)
+:attack-timeout (seconds 0.0)
+:ground-timeout (seconds 0.4)
+:slide-down-timeout (seconds 0.4)
+:fall-timeout (seconds 2)
+:fall-stumble-threshold (meters 79.8)
+:yellow-projectile-speed (meters 320)
+
+       :hit-invulnerable-timeout (seconds 20)
+       :run-cycle-length 60.0
+       :walk-cycle-dist (meters 2.8)
+       :walk-up-cycle-dist (meters 2.8)
+       :walk-down-cycle-dist (meters 2.8)
+       :walk-side-cycle-dist (meters 2.8)
+       :run-cycle-dist (meters 6.25)
+       :run-up-cycle-dist (meters 5)
+       :run-down-cycle-dist (meters 5)
+       :run-side-cycle-dist (meters 6.25)
+       :run-wall-cycle-dist (meters 2.8)
+       :duck-walk-cycle-dist (meters 3.25)
+       :wade-shallow-walk-cycle-dist (meters 6)
+       :wade-deep-walk-cycle-dist (meters 6)
+       :smack-surface-dist (meters 11.25)
+       :min-dive-depth (meters 2)
+       :root-radius (meters 2.2)
+       :root-offset
+       (new 'static 'vector :y 4915.2 :w 1.0)
+       :body-radius (meters 0.7)
+       :edge-radius (meters 0.35)
+       :edge-offset
+       (new 'static 'vector :y 4915.2 :z 4096.0 :w 1.0)
+       :head-radius (meters 0.7)
+       :head-height (meters 1.4)
+       :head-offset
+       (new 'static 'vector :y 4915.2 :w 1.0)
+       :spin-radius (meters 6.2)
+       :spin-offset
+       (new 'static 'vector :y 6553.6 :w 1.0)
+       :duck-spin-radius (meters 1.2)
+       :duck-spin-offset
+       (new 'static 'vector :y 4096.0 :w 1.0)
+       :punch-radius (meters 6.3)
+       :punch-offset
+       (new 'static 'vector :y 5324.8 :w 1.0)
+       :uppercut-radius (meters 1)
+       :uppercut0-offset
+       (new 'static 'vector :y 3276.8 :w 1.0)
+       :uppercut1-offset
+       (new 'static 'vector :y 9011.2 :w 1.0)
+       :flop-radius (meters 8.4)
+       :flop0-offset
+       (new 'static 'vector :y 3276.8 :w 1.0)
+       :flop1-offset
+       (new 'static 'vector :y 9011.2 :w 1.0)
+       :stuck-time (seconds 0.0)
+       :stuck-timeout (seconds 0)
+       :stuck-distance (meters 0.05)
+       :tongue-pull-speed-min 10.15
+       :tongue-pull-speed-max 10.22
+       :yellow-attack-timeout (seconds 0.002)))
+)
+
+
+
+
+
+
+
+
+
+      (((pickup-type eco-blue))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(define *attack-mods*
+  (new 'static
+       'surface
+       :name 'attack
+       :tiltv 65536.0
+       :tiltvv 131072.0
+          :transv-max 140960.0
+          :target-speed 140960.0
+       :seek0 111.0
+       :seek90 111.0
+       :seek180 111.0
+       :fric 1.0
+       :nonlin-fric-dist 1.0
+       :slip-factor 0.0
+       :slide-factor 0.0
+       :slope-up-factor 0.0
+       :slope-down-factor 0.0
+       :slope-slip-angle 30.0
+       :impact-fric 1.0
+       :bend-factor 1.0
+       :bend-speed 1.0
+       :alignv 1.0
+       :slope-up-traction 1.0
+       :align-speed 1.0
+       :mode 'attack
+       :flags (surface-flags attacking)))
+
+
+
+
+(define *walk-mods*
+  (new 'static
+       'surface
+       :name 'run
+       :turnv 131072.0
+       :turnvv 524288.0
+       :tiltv 65536.0
+       :tiltvv 131072.0
+       :transv-max 150960.0
+       :target-speed 150960.0
+       :seek0 111.0
+       :seek90 111.0
+       :seek180 111.0
+       :fric 1.0
+       :nonlin-fric-dist 1.0
+       :slip-factor 0.0
+       :slide-factor 0.0
+       :slope-up-factor 0.0
+       :slope-down-factor 0.0
+       :slope-slip-angle 30.0
+       :impact-fric 1.0
+       :bend-factor 1.0
+       :bend-speed 1.0
+       :alignv 1.0
+       :slope-up-traction 1.0
+       :align-speed 1.0
+       :flags (surface-flags allow-look-around)))
+
+
+
+
+
+
+(define *jump-mods*
+  (new 'static
+       'surface
+       :name 'jump
+       :turnv 131072.0
+       :turnvv 524288.0
+       :tiltv 65536.0
+       :tiltvv 131072.0
+       :transv-max 140960.0
+       :target-speed 140960.0
+       :seek0 111.0
+       :seek90 111.0
+       :seek180 111.0
+       :fric 1.0
+       :nonlin-fric-dist 1.0
+       :slip-factor 0.0
+       :slide-factor 0.0
+       :slope-up-factor 0.0
+       :slope-down-factor 0.0
+       :slope-slip-angle 30.0
+       :impact-fric 1.0
+       :bend-factor 1.0
+       :bend-speed 1.0
+       :alignv 1.0
+       :slope-up-traction 1.0
+       :align-speed 1.0
+       :mode 'run
+       :flags (surface-flags allow-edge-grab)))
+
+(define *double-jump-mods*
+  (new 'static
+       'surface
+       :name 'jump-double
+       :turnv 131072.0
+       :turnvv 524288.0
+       :tiltv 65536.0
+       :tiltvv 131072.0
+       :transv-max 140960.0
+       :target-speed 140960.0
+       :seek0 111.0
+       :seek90 111.0
+       :seek180 111.0
+       :fric 1.0
+       :nonlin-fric-dist 1.0
+       :slip-factor 0.0
+       :slide-factor 0.0
+       :slope-up-factor 0.0
+       :slope-down-factor 0.0
+       :slope-slip-angle 30.0
+       :impact-fric 1.0
+       :bend-factor 1.0
+       :bend-speed 1.0
+       :alignv 1.0
+       :slope-up-traction 1.0
+       :align-speed 1.0
+       :mode 'run
+       :flags (surface-flags allow-edge-grab)))
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(pickup-type eco-pill)
+
+       )
+      
+
+      (((pickup-type eco-pill))
+       ;; Code here runs as soon as you pickup small green eco
+       )
+      (((pickup-type eco-green))
+       ;; Code here runs as soon as you pickup big green eco 
+       ))
+    (when from-vent?
+      ;; Code here runs only if the eco was picked up from a vent
+      ))
+  (none))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(define music-playing? #f)
+
+(defun runs-on-jak-spawn ()
+  (cond
+    ((or (= (-> *level* level0 name) 'l1) (= (-> *level* level1 name) 'l1))
+      (when (not music-playing?)
+        ;; Assure que la musique est lue uniquement si elle n'est pas déjà en cours.
+        (play-main-music "haven city remix jak 4.wav" (the int (* (-> *setting-control* default music-volume) 0.8)))
+        (set! music-playing? #t)))
+    (else
+      ;; Lorsque tu quittes un niveau, arrête la musique et mets à jour l'état.
+      (play-main-music "" (the int (-> *setting-control* default music-volume)))
+      (set! music-playing? #f)))
+  (none))
+
+
+
+
+
+
+
+
+
+
+
+
+(defun runs-on-jak-death ((death-event symbol))
+  (case death-event
+    (('dying)
+
+
+ (set! *spawn-actors* #t)
+
+(set! (-> *time-of-day-proc* 0 hour) 12)
+
+ 
+    (draw-normal *target*) ;; ✅ Jak redevient normal quand le jeu reprend
+
+   
+    (reset-actors 'play)
+
+
+(set-setting! 'process-mask 'clear 0.0 (process-mask enemy platform projectile death))
+
+
+
+     ;; Code here runs immediately every time jak dies, before any death animation or death cutscene
+     )
+    (('blackout)
+     ;; Code here runs after jak dies (and any death cutscene finishes), during the blackout before he spawns
+     ))
+  (none))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; deprecated function defintions.
+;;;;;;;;;;;;;;;;;;;;;;;;;; mm (if (cpad-hold? pad-idx r1)
+
+#| these are no longer recommended/supported however we include them anyways to not break anyones mods. |#
