@@ -319,8 +319,7 @@
   :exit
     (behavior ()
 
-  (set! (-> (level-get-target-inside *level*) mood-func) update-mood-finalboss)
-  (set! (-> (level-get-target-inside *level*) mood) *finalboss-mood*)
+
 
 (set! (-> *time-of-day-proc* 0 hour) 12)
 
@@ -886,8 +885,7 @@
 
 
       (set! (-> *time-of-day-proc* 0 hour) 23)  ; Si la condition est fausse mais avec une autre probabilité, l'heure est définie à 18
-(set! (-> (level-get-target-inside *level*) mood-func) update-mood-swamp)
-  (set! (-> (level-get-target-inside *level*) mood) *swamp-mood*)
+
 
         (let ((current-lang (-> *setting-control* current language)))
     (if (= current-lang (language-enum french))
@@ -2057,5 +2055,3 @@
 
 
 (set! (-> *time-of-day-proc* 0 hour) 12)
-  (set! (-> (level-get-target-inside *level*) mood-func) update-mood-finalboss)
-  (set! (-> (level-get-target-inside *level*) mood) *finalboss-mood*)
